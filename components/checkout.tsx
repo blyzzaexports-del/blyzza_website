@@ -86,19 +86,20 @@ export function Checkout({
 
       /* ================= CREATE ORDER ================= */
 
-      const res = await fetch(
-        "/api/create-order",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type":
-              "application/json",
-          },
-          body: JSON.stringify({
-            amount: total,
-          }),
-        }
-      );
+      const res =
+        await fetch(
+          "/api/create-order",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type":
+                "application/json",
+            },
+            body: JSON.stringify({
+              amount: total,
+            }),
+          }
+        );
 
       const order =
         await res.json();
@@ -137,6 +138,33 @@ export function Checkout({
             "✅ Payment Success"
           );
 
+          /* 🔥 IMPORTANT DEBUG LOGS */
+
+          console.log(
+            "ORDER ID:",
+            response.razorpay_order_id
+          );
+
+          console.log(
+            "PAYMENT ID:",
+            response.razorpay_payment_id
+          );
+
+          console.log(
+            "SIGNATURE:",
+            response.razorpay_signature
+          );
+
+          console.log(
+            "FORM DATA:",
+            formData
+          );
+
+          console.log(
+            "ITEMS:",
+            items
+          );
+
           try {
 
             /* ================= VERIFY PAYMENT ================= */
@@ -162,8 +190,6 @@ export function Checkout({
 
                     razorpay_signature:
                       response.razorpay_signature,
-
-                    /* 🔥 THIS FIXES YOUR ISSUE */
 
                     orderData: {
 
@@ -196,7 +222,7 @@ export function Checkout({
               await verifyRes.json();
 
             console.log(
-              "VERIFY:",
+              "VERIFY RESPONSE:",
               verifyData
             );
 
@@ -210,7 +236,9 @@ export function Checkout({
 
             }
 
-            /* SUCCESS */
+            console.log(
+              "🎉 Order Completed"
+            );
 
             setOrderPlaced(true);
 
