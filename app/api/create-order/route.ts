@@ -4,12 +4,6 @@ import Razorpay from "razorpay";
 export async function POST(req: Request) {
   try {
 
-    // 👉 Move Razorpay inside function
-    const razorpay = new Razorpay({
-      key_id: process.env.RAZORPAY_KEY_ID!,
-      key_secret: process.env.RAZORPAY_KEY_SECRET!,
-    });
-
     const body = await req.json();
     const { amount } = body;
 
@@ -21,6 +15,12 @@ export async function POST(req: Request) {
     }
 
     const finalAmount = Math.round(Number(amount) * 100);
+
+    // Create Razorpay instance INSIDE function
+    const razorpay = new Razorpay({
+      key_id: process.env.RAZORPAY_KEY_ID,
+      key_secret: process.env.RAZORPAY_KEY_SECRET,
+    });
 
     const order = await razorpay.orders.create({
       amount: finalAmount,
