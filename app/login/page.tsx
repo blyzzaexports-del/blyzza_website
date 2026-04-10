@@ -3,196 +3,108 @@
 import { useState } from "react";
 import supabase from "@/lib/supabase";
 
-export default function SignupPage() {
+export default function LoginPage() {
 
-  const [formData, setFormData] =
-    useState({
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-      firstName: "",
-      lastName: "",
-      email: "",
-      password: "",
-
-    });
-
-  const [loading, setLoading] =
-    useState(false);
-
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-
-  };
-
-  const handleSignup = async (
+  const handleLogin = async (
     e: React.FormEvent
   ) => {
 
     e.preventDefault();
 
-    setLoading(true);
-
-    /* CREATE USER */
+    /* LOGIN */
 
     const { data, error } =
-      await supabase.auth.signUp({
+      await supabase.auth.signInWithPassword({
 
-        email: formData.email,
-
-        password: formData.password,
+        email,
+        password,
 
       });
 
     if (error) {
 
       alert(error.message);
-
-      setLoading(false);
       return;
 
     }
 
-    /* INSERT PROFILE */
+    /* GET FIRST NAME */
 
     if (data.user) {
 
-      await supabase
-        .from("profiles")
-        .insert([{
+      const { data: profile } =
+        await supabase
+          .from("profiles")
+          .select("first_name")
+          .eq("id", data.user.id)
+          .single();
 
-          id: data.user.id,
+      if (profile) {
 
-          first_name:
-            formData.firstName,
+        // ⭐ Save name locally
+        localStorage.setItem(
+          "userFirstName",
+          profile.first_name
+        );
 
-          last_name:
-            formData.lastName,
-
-          email:
-            formData.email,
-
-        }]);
+      }
 
     }
 
-    alert("Account created ✅");
-
-    window.location.href =
-      "/login";
+    // Redirect to Home
+    window.location.href = "/";
 
   };
 
   return (
 
-    <div className="min-h-screen flex items-center justify-center bg-[#f5f3ef]">
+    <div className="min-h-screen flex items-center justify-center">
 
       <div className="w-[600px]">
 
-        <h1 className="text-3xl font-semibold text-center mb-8">
+        <h1 className="text-3xl text-center mb-8">
 
-          Create Account
+          Login
 
         </h1>
 
         <form
-          onSubmit={handleSignup}
+          onSubmit={handleLogin}
           className="space-y-5"
         >
 
-          {/* FIRST NAME */}
-
-          <div>
-
-            <label className="text-sm">
-
-              First Name
-
-            </label>
-
-            <input
-              name="firstName"
-              className="w-full border p-3 mt-1"
-              onChange={handleChange}
-              required
-            />
-
-          </div>
-
-          {/* LAST NAME */}
-
-          <div>
-
-            <label className="text-sm">
-
-              Last Name
-
-            </label>
-
-            <input
-              name="lastName"
-              className="w-full border p-3 mt-1"
-              onChange={handleChange}
-              required
-            />
-
-          </div>
-
           {/* EMAIL */}
 
-          <div>
-
-            <label className="text-sm">
-
-              Email
-
-            </label>
-
-            <input
-              type="email"
-              name="email"
-              className="w-full border p-3 mt-1"
-              onChange={handleChange}
-              required
-            />
-
-          </div>
+          <input
+            type="email"
+            placeholder="Email"
+            className="w-full border p-3"
+            onChange={(e) =>
+              setEmail(e.target.value)
+            }
+            required
+          />
 
           {/* PASSWORD */}
 
-          <div>
-
-            <label className="text-sm">
-
-              Password
-
-            </label>
-
-            <input
-              type="password"
-              name="password"
-              className="w-full border p-3 mt-1"
-              onChange={handleChange}
-              required
-            />
-
-          </div>
-
-          {/* BUTTON */}
+          <input
+            type="password"
+            placeholder="Password"
+            className="w-full border p-3"
+            onChange={(e) =>
+              setPassword(e.target.value)
+            }
+            required
+          />
 
           <button
-            type="submit"
-            disabled={loading}
-            className="w-full bg-[#556b4f] text-white py-4 mt-4"
+            className="w-full bg-[#556b4f] text-white py-4"
           >
 
-            {loading
-              ? "Creating..."
-              : "Create"}
+            Login
 
           </button>
 
@@ -203,5 +115,4 @@ export default function SignupPage() {
     </div>
 
   );
-
 }

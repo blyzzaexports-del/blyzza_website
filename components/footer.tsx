@@ -47,7 +47,7 @@ export function Footer() {
               Categories
             </h4>
             <ul className="space-y-3">
-              {["Skincare", "Haircare", "Soaps", "Powders", "Butters"].map(
+              {["Skincare", "Haircare", "Soaps", "Butters"].map(
                 (category) => (
                   <li key={category}>
                     <Link
