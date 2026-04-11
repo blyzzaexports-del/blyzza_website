@@ -64,7 +64,7 @@ export function ProductCard({
         />
 
         {/* Quick Add */}
-        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none group-hover:pointer-events-auto">
           <button
             onClick={() => {
               console.log("🛒 ADD:", product.name, safeSizeIndex);
