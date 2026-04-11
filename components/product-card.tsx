@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { Plus } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export interface Product {
   id: number;
@@ -25,8 +25,28 @@ export function ProductCard({
   featured = false,
 }: ProductCardProps) {
 
-  // ⭐ Selected Size State
   const [selectedSizeIndex, setSelectedSizeIndex] = useState(0);
+  const [mounted, setMounted] = useState(false);
+
+  /* 🔥 Fix hydration issue */
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null;
+
+  /* 🔥 Safety checks */
+  if (!product || !product.sizes || !product.prices) {
+    console.error("❌ Invalid product data:", product);
+    return null;
+  }
+
+  const safeSizeIndex =
+    selectedSizeIndex < product.sizes.length
+      ? selectedSizeIndex
+      : 0;
+
+  const price = product.prices[safeSizeIndex];
 
   return (
     <div
@@ -46,9 +66,10 @@ export function ProductCard({
         {/* Quick Add */}
         <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
           <button
-            onClick={() =>
-              onAddToCart(product, selectedSizeIndex)
-            }
+            onClick={() => {
+              console.log("🛒 ADD:", product.name, safeSizeIndex);
+              onAddToCart(product, safeSizeIndex);
+            }}
             className="bg-card text-foreground px-6 py-3 rounded-full font-medium shadow-lg hover:bg-primary hover:text-primary-foreground transition-colors duration-200 flex items-center gap-2"
           >
             <Plus className="w-4 h-4" />
@@ -68,15 +89,17 @@ export function ProductCard({
           {product.name}
         </h3>
 
-        {/* ⭐ SIZE SELECT */}
+        {/* Sizes */}
         <div className="flex flex-wrap gap-2 mb-3">
           {product.sizes.map((size, index) => (
             <button
               key={size}
-              onClick={() => setSelectedSizeIndex(index)}
-              className={`text-xs px-3 py-1 rounded-full border transition
-              ${
-                selectedSizeIndex === index
+              onClick={() => {
+                console.log("SIZE CLICK:", size, index);
+                setSelectedSizeIndex(index);
+              }}
+              className={`text-xs px-3 py-1 rounded-full border transition ${
+                safeSizeIndex === index
                   ? "bg-primary text-primary-foreground"
                   : "bg-muted text-muted-foreground"
               }`}
@@ -86,17 +109,18 @@ export function ProductCard({
           ))}
         </div>
 
-        {/* ⭐ PRICE CHANGE */}
+        {/* Price + Add */}
         <div className="flex items-center justify-between">
 
           <span className="text-primary font-semibold text-lg">
-            ₹{product.prices[selectedSizeIndex]}
+            ₹{price}
           </span>
 
           <button
-            onClick={() =>
-              onAddToCart(product, selectedSizeIndex)
-            }
+            onClick={() => {
+              console.log("➕ BUTTON ADD:", product.name, safeSizeIndex);
+              onAddToCart(product, safeSizeIndex);
+            }}
             className="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors duration-200"
           >
             <Plus className="w-5 h-5" />

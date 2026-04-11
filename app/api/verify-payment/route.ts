@@ -13,83 +13,58 @@ const supabase = createClient(
 /* ================= API ================= */
 
 export async function POST(req: Request) {
-
   try {
-
-    const body =
-      await req.json();
+    const body = await req.json();
 
     const {
-
       razorpay_order_id,
       razorpay_payment_id,
       razorpay_signature,
       orderData,
-
     } = body;
 
-    console.log(
-      "ORDER DATA:",
-      orderData
-    );
-
-    /* ================= CHECK ORDER DATA ================= */
+    /* ================= VALIDATION ================= */
 
     if (!orderData) {
-
-      console.log(
-        "❌ orderData missing"
+      return NextResponse.json(
+        { success: false, message: "Order data missing" },
+        { status: 400 }
       );
+    }
 
-      return NextResponse.json({
-        success: false,
-        message: "Order data missing",
-      });
-
+    if (
+      !razorpay_order_id ||
+      !razorpay_payment_id ||
+      !razorpay_signature
+    ) {
+      return NextResponse.json(
+        { success: false, message: "Payment details missing" },
+        { status: 400 }
+      );
     }
 
     /* ================= VERIFY SIGNATURE ================= */
 
     const sign =
-      razorpay_order_id +
-      "|" +
-      razorpay_payment_id;
+      razorpay_order_id + "|" + razorpay_payment_id;
 
-    const expectedSign =
-      crypto
-        .createHmac(
-          "sha256",
-          process.env
-            .RAZORPAY_KEY_SECRET!
-        )
-        .update(sign)
-        .digest("hex");
+    const expectedSign = crypto
+      .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET!)
+      .update(sign)
+      .digest("hex");
 
-    if (
-      expectedSign !==
-      razorpay_signature
-    ) {
-
-      console.log(
-        "❌ Payment verification failed"
+    if (expectedSign !== razorpay_signature) {
+      return NextResponse.json(
+        { success: false, message: "Payment verification failed" },
+        { status: 400 }
       );
-
-      return NextResponse.json({
-        success: false,
-        message:
-          "Payment verification failed",
-      });
-
     }
 
-    console.log(
-      "✅ Payment verified"
-    );
+    console.log("✅ Payment verified");
 
-    /* ================= GET ORDER DATA ================= */
+    /* ================= EXTRACT ORDER ================= */
 
     const {
-
       first_name,
       last_name,
       email,
@@ -97,186 +72,110 @@ export async function POST(req: Request) {
       address,
       total,
       items,
-
     } = orderData;
 
     /* ================= SAVE ORDER ================= */
 
-    const { error } =
-      await supabase
-        .from("orders")
-        .insert({
-
-          first_name:
-            first_name,
-
-          last_name:
-            last_name ?? "",
-
-          email:
-            email,
-
-          phone:
-            phone,
-
-          address:
-            address,
-
-          total:
-            total,
-
-          items:
-            items,
-
-          payment_id:
-            razorpay_payment_id,
-
-          order_id:
-            razorpay_order_id,
-
-          status:
-            "Placed",
-
-          refund_status:
-            "Not Requested",
-
-        });
+    const { error } = await supabase.from("orders").insert({
+      first_name,
+      last_name: last_name ?? "",
+      email,
+      phone,
+      address,
+      total,
+      items,
+      payment_id: razorpay_payment_id,
+      order_id: razorpay_order_id,
+      status: "Placed",
+      refund_status: "Not Requested",
+    });
 
     if (error) {
+      console.error("❌ DB Insert Error:", error);
 
-      console.log(
-        "❌ DB Insert Error:",
-        error
+      return NextResponse.json(
+        { success: false, message: "Order save failed" },
+        { status: 500 }
       );
-
-      return NextResponse.json({
-        success: false,
-        message:
-          "Order save failed",
-      });
-
     }
 
-    console.log(
-      "✅ Order Saved"
-    );
+    console.log("✅ Order saved");
 
     /* ================= FORMAT ITEMS ================= */
 
-    const formattedItems =
-      items
-        ?.map((item: any) => {
+    const formattedItems = items
+      ?.map((item: any) => {
+        const product = item.product;
+        const size = product.sizes[item.sizeIndex];
+        const price = product.prices[item.sizeIndex];
 
-          const product =
-            item.product;
-
-          const size =
-            product.sizes[
-              item.sizeIndex
-            ];
-
-          const price =
-            product.prices[
-              item.sizeIndex
-            ];
-
-          return `
-
+        return `
 Product: ${product.name}
 Size: ${size}
-Quantity: ${item.quantity}
+Qty: ${item.quantity}
 Price: ₹${price}
-
 `;
+      })
+      .join("\n");
 
-        })
-        .join("");
+    /* ================= EMAIL ================= */
 
-    /* ================= SEND EMAIL ================= */
-
-    const transporter =
-      nodemailer.createTransport({
-
+    try {
+      const transporter = nodemailer.createTransport({
         service: "gmail",
-
         auth: {
-
-          user:
-            process.env.EMAIL_USER,
-
-          pass:
-            process.env.EMAIL_PASS,
-
+          user: process.env.EMAIL_USER,
+          pass: process.env.EMAIL_PASS,
         },
-
       });
 
-    const mailOptions = {
-
-      from:
-        process.env.EMAIL_USER,
-
-      to:
-        process.env.EMAIL_USER,
-
-      subject:
-        "🛒 New Order Received",
-
-      text: `
-
-New Order Details
+      const mailOptions = {
+        from: process.env.EMAIL_USER,
+        to: process.env.EMAIL_USER,
+        subject: "🛒 New Order Received",
+        text: `
+New Order
 
 Name: ${first_name}
-
 Email: ${email}
-
 Phone: ${phone}
-
 Address: ${address}
 
 Total: ₹${total}
 
 Payment ID: ${razorpay_payment_id}
-
 Order ID: ${razorpay_order_id}
 
 Items:
 ${formattedItems}
+        `,
+      };
 
-      `,
+      await transporter.sendMail(mailOptions);
 
-    };
+      console.log("📧 Mail sent");
+    } catch (mailError) {
+      console.error("❌ Mail failed:", mailError);
 
-    await transporter.sendMail(
-      mailOptions
-    );
-
-    console.log(
-      "📧 Mail Sent Successfully"
-    );
+      // 🔥 IMPORTANT: email fail ஆனாலும் API crash ஆகாது
+    }
 
     /* ================= SUCCESS ================= */
 
-    return NextResponse.json({
-      success: true,
-    });
-
-  } catch (error: any) {
-
-    console.log(
-      "VERIFY ERROR:",
-      error
+    return NextResponse.json(
+      { success: true },
+      { status: 200 }
     );
 
-    return NextResponse.json({
+  } catch (error: any) {
+    console.error("❌ VERIFY ERROR:", error);
 
-      success: false,
-
-      message:
-        error.message,
-
-    });
-
+    return NextResponse.json(
+      {
+        success: false,
+        message: error.message || "Server error",
+      },
+      { status: 500 }
+    );
   }
-
 }
