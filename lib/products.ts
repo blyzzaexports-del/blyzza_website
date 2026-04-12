@@ -5,7 +5,7 @@ export const products: Product[] = [
     id: 1,
     name: "Aloe Vera Gel",
     sizes: ["100gm"],
-    prices: [1],
+    prices: [5],
     image: "about/aloevera.jpg",
     category: "skincare",
   },
