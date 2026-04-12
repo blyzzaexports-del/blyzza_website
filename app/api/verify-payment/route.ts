@@ -3,6 +3,8 @@ import crypto from "crypto";
 import { createClient } from "@supabase/supabase-js";
 import nodemailer from "nodemailer";
 
+
+
 /* ================= SUPABASE ================= */
 
 const supabase = createClient(
@@ -13,6 +15,7 @@ const supabase = createClient(
 /* ================= API ================= */
 
 export async function POST(req: Request) {
+  console.log("🔥 VERIFY API HIT"); 
   try {
     const body = await req.json();
 
@@ -54,11 +57,19 @@ export async function POST(req: Request) {
       .digest("hex");
 
     if (expectedSign !== razorpay_signature) {
-      return NextResponse.json(
-        { success: false, message: "Payment verification failed" },
-        { status: 400 }
-      );
-    }
+
+    console.log("❌ SIGNATURE FAILED");
+    console.log("SECRET:", process.env.RAZORPAY_KEY_SECRET);
+    console.log("EXPECTED:", expectedSign);
+    console.log("RECEIVED:", razorpay_signature);
+    console.log("ORDER ID:", razorpay_order_id);
+    console.log("PAYMENT ID:", razorpay_payment_id);
+
+    return NextResponse.json(
+      { success: false, message: "Payment verification failed" },
+      { status: 400 }
+    );
+  }
 
     console.log("✅ Payment verified");
 
