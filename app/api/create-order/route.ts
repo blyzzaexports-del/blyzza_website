@@ -3,42 +3,44 @@ import Razorpay from "razorpay";
 
 export async function POST(req: Request) {
   try {
+    console.log("🚀 API HIT");
 
     const body = await req.json();
+    console.log("📦 BODY:", body);
+
     const { amount } = body;
 
-    if (!amount || isNaN(amount) || amount <= 0) {
-      return NextResponse.json(
-        { error: "Invalid amount" },
-        { status: 400 }
-      );
+    if (!amount) {
+      console.log("❌ Amount missing");
+      return NextResponse.json({ error: "Amount missing" }, { status: 400 });
     }
 
-    const finalAmount = Math.round(Number(amount) * 100);
+    console.log("💰 Amount:", amount);
 
-    // Create Razorpay instance INSIDE function
+    console.log("🔑 KEY:", process.env.RAZORPAY_KEY_ID);
+    console.log("🔐 SECRET:", process.env.RAZORPAY_KEY_SECRET);
+
     const razorpay = new Razorpay({
-      key_id: process.env.RAZORPAY_KEY_ID,
-      key_secret: process.env.RAZORPAY_KEY_SECRET,
+      key_id: process.env.RAZORPAY_KEY_ID!,
+      key_secret: process.env.RAZORPAY_KEY_SECRET!,
     });
 
     const order = await razorpay.orders.create({
-      amount: finalAmount,
+      amount: Number(amount) * 100,
       currency: "INR",
-      receipt: `receipt_${Date.now()}`,
     });
 
-    return NextResponse.json({
-      id: order.id,
-      amount: order.amount,
-      currency: order.currency,
-    });
+    console.log("✅ ORDER CREATED:", order);
+
+    return NextResponse.json(order);
 
   } catch (error: any) {
-    console.error("CREATE ORDER ERROR:", error?.message);
+    console.error("❌ FULL ERROR:", error);
+    console.error("❌ MESSAGE:", error?.message);
+    console.error("❌ STACK:", error?.stack);
 
     return NextResponse.json(
-      { error: "Failed to create order" },
+      { error: error?.message || "Server error" },
       { status: 500 }
     );
   }

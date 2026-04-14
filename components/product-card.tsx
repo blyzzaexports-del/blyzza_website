@@ -67,7 +67,14 @@ export function ProductCard({
         <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none group-hover:pointer-events-auto">
           <button
             onClick={() => {
-              console.log("🛒 ADD:", product.name, safeSizeIndex);
+              console.log(
+                  "🛒 ADD:",
+                  product.name,
+                  "SizeIndex:",
+                  safeSizeIndex,
+                  "Price:",
+                  price
+                );
               onAddToCart(product, safeSizeIndex);
             }}
             className="bg-card text-foreground px-6 py-3 rounded-full font-medium shadow-lg hover:bg-primary hover:text-primary-foreground transition-colors duration-200 flex items-center gap-2"
@@ -118,7 +125,14 @@ export function ProductCard({
 
           <button
             onClick={() => {
-              console.log("➕ BUTTON ADD:", product.name, safeSizeIndex);
+              console.log(
+                "➕ BUTTON ADD:",
+                product.name,
+                "SizeIndex:",
+                safeSizeIndex,
+                "Price:",
+                price
+              );
               onAddToCart(product, safeSizeIndex);
             }}
             className="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors duration-200"
