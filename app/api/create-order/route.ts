@@ -10,29 +10,61 @@ export async function POST(req: Request) {
 
     const { amount } = body;
 
-    if (!amount) {
-      console.log("❌ Amount missing");
-      return NextResponse.json({ error: "Amount missing" }, { status: 400 });
+    /* ================= VALIDATION ================= */
+
+    const amountNum = Number(amount);
+
+    if (!amountNum || isNaN(amountNum) || amountNum <= 0) {
+      console.log("❌ Invalid amount:", amount);
+      return NextResponse.json(
+        { error: "Invalid amount" },
+        { status: 400 }
+      );
     }
 
-    console.log("💰 Amount:", amount);
+    console.log("💰 Final Amount (INR):", amountNum);
 
-    console.log("🔑 KEY:", process.env.RAZORPAY_KEY_ID);
-    console.log("🔐 SECRET:", process.env.RAZORPAY_KEY_SECRET);
+    /* ================= ENV CHECK ================= */
+
+    const key_id = process.env.RAZORPAY_KEY_ID;
+    const key_secret = process.env.RAZORPAY_KEY_SECRET;
+
+    if (!key_id || !key_secret) {
+      console.log("❌ Razorpay keys missing");
+      return NextResponse.json(
+        { error: "Payment gateway not configured" },
+        { status: 500 }
+      );
+    }
+
+    console.log("🔑 Razorpay Key Loaded");
+
+    /* ================= INIT ================= */
 
     const razorpay = new Razorpay({
-      key_id: process.env.RAZORPAY_KEY_ID!,
-      key_secret: process.env.RAZORPAY_KEY_SECRET!,
+      key_id,
+      key_secret,
     });
 
+    /* ================= CREATE ORDER ================= */
+
     const order = await razorpay.orders.create({
-      amount: Number(amount) * 100,
+      amount: amountNum * 100, // ✅ paisa conversion (IMPORTANT)
       currency: "INR",
+      receipt: `receipt_${Date.now()}`,
     });
 
     console.log("✅ ORDER CREATED:", order);
 
-    return NextResponse.json(order);
+    /* ================= RESPONSE ================= */
+
+    return NextResponse.json(
+      {
+        success: true,
+        order,
+      },
+      { status: 200 }
+    );
 
   } catch (error: any) {
     console.error("❌ FULL ERROR:", error);
@@ -40,7 +72,10 @@ export async function POST(req: Request) {
     console.error("❌ STACK:", error?.stack);
 
     return NextResponse.json(
-      { error: error?.message || "Server error" },
+      {
+        success: false,
+        error: error?.message || "Server error",
+      },
       { status: 500 }
     );
   }

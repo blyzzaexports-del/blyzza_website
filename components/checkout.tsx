@@ -45,7 +45,6 @@ export function Checkout({
 
   const loadRazorpay = () => {
     return new Promise((resolve) => {
-
       if (window.Razorpay) {
         resolve(true);
         return;
@@ -55,15 +54,8 @@ export function Checkout({
       script.src = "https://checkout.razorpay.com/v1/checkout.js";
       script.async = true;
 
-      script.onload = () => {
-        console.log("✅ Razorpay loaded");
-        resolve(true);
-      };
-
-      script.onerror = () => {
-        console.error("❌ Razorpay load failed");
-        resolve(false);
-      };
+      script.onload = () => resolve(true);
+      script.onerror = () => resolve(false);
 
       document.body.appendChild(script);
     });
@@ -82,7 +74,6 @@ export function Checkout({
     setLoading(true);
 
     try {
-
       const loaded = await loadRazorpay();
 
       if (!loaded) {
@@ -91,23 +82,30 @@ export function Checkout({
         return;
       }
 
-      /* CREATE ORDER */
+      /* ✅ CREATE ORDER */
       const res = await fetch("/api/create-order", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ amount: total }),
+        body: JSON.stringify({ amount: Number(total) }),
       });
 
-      const order = await res.json();
+      const data = await res.json();
+      console.log("🧾 FULL RESPONSE:", data);
 
-      console.log("🧾 Razorpay Order:", order);
+      if (!data.success || !data.order) {
+        alert("Order creation failed");
+        setLoading(false);
+        return;
+      }
+
+      const order = data.order;
 
       /* ================= OPTIONS ================= */
 
       const options = {
-        key: "rzp_test_SdGp63f1GOrPE7",
+        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
 
         amount: order.amount,
         currency: "INR",
@@ -116,19 +114,10 @@ export function Checkout({
         name: "Blyzza",
         description: "Order Payment",
 
-        image: "/logo.png", // ✅ local fix
-
-        /* ================= HANDLER ================= */
+        // image: "/logo.png",
 
         handler: async function (response: any) {
-
-          console.log("🔥 HANDLER TRIGGERED");
-          console.log("🔥 FULL RESPONSE:", response);
-
-          if (!response) {
-            alert("No response from Razorpay");
-            return;
-          }
+          console.log("🔥 PAYMENT SUCCESS:", response);
 
           const {
             razorpay_payment_id,
@@ -136,7 +125,10 @@ export function Checkout({
             razorpay_signature,
           } = response;
 
-          console.log("PAYMENT ID:", razorpay_payment_id);
+          if (!razorpay_payment_id) {
+            alert("Payment failed");
+            return;
+          }
 
           try {
             const verifyRes = await fetch("/api/verify-payment", {
@@ -159,19 +151,15 @@ export function Checkout({
               }),
             });
 
-            if (!verifyRes.ok) {
-              console.error("❌ API FAILED");
-              alert("Server error");
-              return;
+            const verifyData = await verifyRes.json();
+
+            console.log("✅ VERIFY:", verifyData);
+
+            if (verifyData.success) {
+              setOrderPlaced(true);
+            } else {
+              alert("Payment verification failed");
             }
-
-            const data = await verifyRes.json();
-
-            console.log("🔥 VERIFY RESPONSE:", data);
-
-            /* ✅ FORCE SUCCESS (UI FIX) */
-            setOrderPlaced(true);
-            alert("🎉 Order Success");
 
           } catch (err) {
             console.error("VERIFY ERROR:", err);
@@ -179,11 +167,9 @@ export function Checkout({
           }
         },
 
-        /* ================= FAILURE ================= */
-
         modal: {
           ondismiss: function () {
-            console.log("❌ Payment popup closed");
+            console.log("❌ Payment closed");
           },
         },
 
