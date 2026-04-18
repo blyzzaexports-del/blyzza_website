@@ -51,12 +51,20 @@ export const products: Product[] = [
   },
   {
     id: 7,
-    name: "Goat Milk White Soap",
+    name: "Goat milk white soap",
     sizes: ["100gm"],
     prices: [199],
     image: "about/goatmilk.jpg",
     category: "soaps",
   },
+  // {
+  //   id: 7,
+  //   name: "Goat Milk White Soap",
+  //   sizes: ["100gm"],
+  //   prices: [199],
+  //   image: "about/goatmilk.jpg",
+  //   category: "soaps",
+  // },
   {
     id: 8,
     name: "Neem Soap",
