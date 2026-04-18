@@ -22,11 +22,15 @@ export function Checkout({
   items,
 }: CheckoutProps) {
 
+  const DELIVERY_CHARGE = total >= 50 ? 50 : 0;
+  const finalTotal = total + DELIVERY_CHARGE;
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     phone: "",
     address: "",
+    pincode: "",
   });
 
   const [loading, setLoading] = useState(false);
@@ -66,8 +70,20 @@ export function Checkout({
   const handleSubmit = async (e: any) => {
     e.preventDefault();
 
-    if (!formData.name || !formData.phone || !formData.address) {
-      alert("Fill all required fields");
+    // ✅ REQUIRED VALIDATION
+    if (
+      !formData.name ||
+      !formData.phone ||
+      !formData.address ||
+      !formData.pincode
+    ) {
+      alert("Please fill all required fields including pincode");
+      return;
+    }
+
+    // ✅ PINCODE VALIDATION (India)
+    if (!/^[0-9]{6}$/.test(formData.pincode)) {
+      alert("Please enter a valid 6-digit pincode");
       return;
     }
 
@@ -88,11 +104,10 @@ export function Checkout({
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ amount: Number(total) }),
+        body: JSON.stringify({ amount: Number(finalTotal) }), // ✅ final total
       });
 
       const data = await res.json();
-      console.log("🧾 FULL RESPONSE:", data);
 
       if (!data.success || !data.order) {
         alert("Order creation failed");
@@ -113,11 +128,7 @@ export function Checkout({
 
         name: "Blyzza",
         description: "Order Payment",
-
-        // image: "/logo.png",
-
         handler: async function (response: any) {
-          console.log("🔥 PAYMENT SUCCESS:", response);
 
           const {
             razorpay_payment_id,
@@ -145,15 +156,14 @@ export function Checkout({
                   email: formData.email,
                   phone: formData.phone,
                   address: formData.address,
-                  total,
+                  pincode: formData.pincode, // ✅ added
+                  total: finalTotal, // ✅ correct total
                   items,
                 },
               }),
             });
 
             const verifyData = await verifyRes.json();
-
-            console.log("✅ VERIFY:", verifyData);
 
             if (verifyData.success) {
               setOrderPlaced(true);
@@ -169,7 +179,7 @@ export function Checkout({
 
         modal: {
           ondismiss: function () {
-            console.log("❌ Payment closed");
+            console.log("Payment closed");
           },
         },
 
@@ -186,8 +196,7 @@ export function Checkout({
 
       const rzp = new window.Razorpay(options);
 
-      rzp.on("payment.failed", function (response: any) {
-        console.error("❌ PAYMENT FAILED:", response.error);
+      rzp.on("payment.failed", function () {
         alert("Payment failed");
       });
 
@@ -246,7 +255,18 @@ export function Checkout({
 
           <textarea name="address" placeholder="Address" onChange={handleChange} className="w-full border p-2" required />
 
-          <div className="font-bold">Total: ₹{total}</div>
+          <input
+            name="pincode"
+            placeholder="Pincode"
+            onChange={handleChange}
+            className="w-full border p-2"
+            required
+          />
+
+          {/* ✅ PRICE BREAKUP */}
+          <div className="text-sm">Subtotal: ₹{total}</div>
+          <div className="text-sm">Delivery: ₹{DELIVERY_CHARGE}</div>
+          <div className="font-bold">Total: ₹{finalTotal}</div>
 
           <button type="submit" disabled={loading} className="w-full bg-black text-white py-2 rounded">
             {loading ? "Processing..." : "Pay Now"}

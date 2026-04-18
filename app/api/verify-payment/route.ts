@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import crypto from "crypto";
 import nodemailer from "nodemailer";
+import { supabaseAdmin } from "@/lib/supabase-admin"; // ✅ ADD THIS
 
 export async function POST(req: Request) {
   try {
@@ -38,6 +39,30 @@ export async function POST(req: Request) {
 
     console.log("✅ PAYMENT VERIFIED");
 
+    /* ================= SAVE TO DB ================= */
+
+    const { error } = await supabaseAdmin.from("orders").insert([
+      {
+        first_name: orderData.first_name,
+        email: orderData.email,
+        phone: orderData.phone,
+        address: orderData.address,
+        pincode: orderData.pincode, // ✅ THIS IS WHAT YOU ASKED
+        total: orderData.total,
+        items: orderData.items,
+
+        razorpay_order_id,
+        razorpay_payment_id,
+      },
+    ]);
+
+    if (error) {
+      console.error("❌ DB ERROR:", error);
+      return NextResponse.json({ success: false });
+    }
+
+    console.log("💾 ORDER SAVED IN DB");
+
     /* ================= MAIL ================= */
 
     const transporter = nodemailer.createTransport({
@@ -48,7 +73,6 @@ export async function POST(req: Request) {
       },
     });
 
-    // 🔥 IMPORTANT: hardcode admin mail (no env issue)
     const ADMIN_MAIL = "blyzzaexports@gmail.com";
 
     const itemsHtml = orderData.items
@@ -64,6 +88,7 @@ export async function POST(req: Request) {
       <p><b>Name:</b> ${orderData.first_name}</p>
       <p><b>Phone:</b> ${orderData.phone}</p>
       <p><b>Address:</b> ${orderData.address}</p>
+      <p><b>Pincode:</b> ${orderData.pincode}</p> <!-- ✅ ADDED -->
 
       <p><b>Total:</b> ₹${orderData.total}</p>
 
@@ -76,7 +101,7 @@ export async function POST(req: Request) {
 
     await transporter.sendMail({
       from: `"Blyzza Store" <${process.env.EMAIL_USER}>`,
-      to: ADMIN_MAIL, // 🔥 ONLY ADMIN
+      to: ADMIN_MAIL,
       subject: "🧾 New Order Received",
       html,
     });

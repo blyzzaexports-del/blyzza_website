@@ -69,7 +69,7 @@ export function Footer() {
             </h4>
             <div className="flex gap-4">
               <a
-                href="https://instagram.com/"
+                href="https://instagram.com/blyzza_herbs/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-10 h-10 rounded-full bg-primary-foreground/10 flex items-center justify-center hover:bg-primary-foreground/20 transition-colors duration-200"
@@ -89,7 +89,7 @@ export function Footer() {
                 </svg>
               </a>
               <a
-                href="https://facebook.com/"
+                href="https://facebook.com/Blyzza Herbs/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-10 h-10 rounded-full bg-primary-foreground/10 flex items-center justify-center hover:bg-primary-foreground/20 transition-colors duration-200"
