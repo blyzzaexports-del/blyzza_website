@@ -54,7 +54,7 @@ export const products: Product[] = [
     name: "Goat Milk White Soap",
     sizes: ["100gm"],
     prices: [199],
-    image: "/about/goatmilk.jpg",
+    image: "about/goatmilk.jpg",
     category: "soaps",
   },
   {
