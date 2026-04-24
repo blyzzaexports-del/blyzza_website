@@ -12,6 +12,10 @@ export interface Product {
   prices: number[];
   image: string[];
   category: string;
+  description?: string;
+  benefits?: string;
+  howToUse?: string;
+  ingredients?: string;
 }
 
 interface ProductCardProps {

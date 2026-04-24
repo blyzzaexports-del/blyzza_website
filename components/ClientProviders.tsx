@@ -16,7 +16,7 @@ export default function ClientProviders({
 
   /* 🛒 ADD TO CART (MERGE SAME PRODUCT) */
   const handleAddToCart = useCallback(
-    (product: any, sizeIndex: number) => {
+    (product: any, sizeIndex: number, quantity: number = 1) => {
       setCartItems((prev) => {
         const existingItem = prev.find(
           (item) =>
@@ -30,7 +30,7 @@ export default function ClientProviders({
             item.sizeIndex === sizeIndex
               ? {
                   ...item,
-                  quantity: item.quantity + 1,
+                  quantity: item.quantity + quantity, // ✅ FIX HERE
                 }
               : item
           );
@@ -41,12 +41,12 @@ export default function ClientProviders({
           {
             product,
             sizeIndex,
-            quantity: 1,
+            quantity: quantity, // ✅ FIX
           },
         ];
       });
 
-      setIsCartOpen(true); // 👉 add pannina udane cart open
+      setIsCartOpen(true);
     },
     []
   );
@@ -94,7 +94,11 @@ export default function ClientProviders({
   /* 🎧 GLOBAL EVENTS */
   useEffect(() => {
     const add = (e: any) => {
-      handleAddToCart(e.detail.product, e.detail.sizeIndex);
+      handleAddToCart(
+        e.detail.product,
+        e.detail.sizeIndex,
+        e.detail.quantity || 1 // ✅ FIX
+      );
     };
 
     const openCart = () => setIsCartOpen(true);
