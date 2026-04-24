@@ -35,7 +35,7 @@ export const products: Product[] = [
   howToUse: `Take a small amount of aloe vera gel and apply evenly on clean skin or scalp. Gently massage until fully absorbed. It can be used as a daily moisturizer, soothing gel, or hair conditioner. Use regularly for best results.`,
 
   // ✅ INGREDIENTS 🔥
-  ingredients: `Aloe Vera Extract, Purified Water, Natural Base`,
+  ingredients: `Aloe Vera Extract, Coconut Oil, Shea Butter, Castor Oil, Olive Oil, Glycerin, Vitamin E, Natural Essential Oils, Herbal Base`,
 },
   {
     id: 2,
