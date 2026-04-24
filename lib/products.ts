@@ -68,13 +68,13 @@ export const products: Product[] = [
     prices: [109, 159, 209],
 
     image: [
-      "/about/chamomile1.jpg",
-      "/about/chamomile2.jpg",
-      "/about/chamomile3.jpg",
-      "/about/chamomile4.jpg",
-      "/about/chamomile5.jpg",
-      "/about/chamomile6.jpg",
-      "/about/chamomile7.jpg"
+      "/about/Chamomile1.jpg",
+      "/about/Chamomile2.jpg",
+      "/about/Chamomile3.jpg",
+      "/about/Chamomile4.jpg",
+      "/about/Chamomile5.jpg",
+      "/about/Chamomile6.jpg",
+      "/about/Chamomile7.jpg"
     ],
 
     category: "skincare",
