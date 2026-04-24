@@ -271,6 +271,28 @@ export default function Home() {
 
     );
 
+    useEffect(() => {
+  const action = localStorage.getItem("cart-action");
+
+  if (!action) return;
+
+  const data = JSON.parse(action);
+
+  if (data.product) {
+    handleAddToCart(data.product, 0);
+  }
+
+  if (data.type === "cart") {
+    setIsCartOpen(true);
+  }
+
+  if (data.type === "checkout") {
+    setIsCheckoutOpen(true);
+  }
+
+  localStorage.removeItem("cart-action");
+}, []);
+
   return (
 
     <main className="min-h-screen">

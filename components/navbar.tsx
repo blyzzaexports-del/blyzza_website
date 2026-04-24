@@ -13,6 +13,7 @@ import Link from "next/link";
 import { AuthModal } from "./Authmodel";
 
 import supabase from "@/lib/supabase";
+import Image from "next/image";
 
 interface NavbarProps {
   cartCount: number;
@@ -113,13 +114,13 @@ export function Navbar({
             href="#home"
             className="flex items-center"
           >
-
-            <span className="font-serif text-2xl md:text-3xl font-bold text-primary">
-
-              Blyzza
-
-            </span>
-
+            <Image
+              src="about/logo.png"   // 👉 உங்கள் logo file name
+              alt="Blyzza Logo"
+              width={140}
+              height={50}
+              className="object-contain"
+            />
           </Link>
 
           {/* Desktop Navigation */}

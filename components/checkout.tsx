@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import confetti from "canvas-confetti";
 
 declare global {
   interface Window {
@@ -36,6 +37,24 @@ export function Checkout({
   const [loading, setLoading] = useState(false);
   const [orderPlaced, setOrderPlaced] = useState(false);
 
+  /* 🎉 CONFETTI FUNCTION */
+  const fireConfetti = () => {
+    const duration = 2 * 1000;
+    const end = Date.now() + duration;
+
+    (function frame() {
+      confetti({
+        particleCount: 6,
+        spread: 70,
+        origin: { y: 0.6 },
+      });
+
+      if (Date.now() < end) {
+        requestAnimationFrame(frame);
+      }
+    })();
+  };
+
   /* ================= INPUT ================= */
 
   const handleChange = (e: any) => {
@@ -70,7 +89,6 @@ export function Checkout({
   const handleSubmit = async (e: any) => {
     e.preventDefault();
 
-    // ✅ REQUIRED VALIDATION
     if (
       !formData.name ||
       !formData.phone ||
@@ -81,7 +99,6 @@ export function Checkout({
       return;
     }
 
-    // ✅ PINCODE VALIDATION (India)
     if (!/^[0-9]{6}$/.test(formData.pincode)) {
       alert("Please enter a valid 6-digit pincode");
       return;
@@ -98,13 +115,12 @@ export function Checkout({
         return;
       }
 
-      /* ✅ CREATE ORDER */
       const res = await fetch("/api/create-order", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ amount: Number(finalTotal) }), // ✅ final total
+        body: JSON.stringify({ amount: Number(finalTotal) }),
       });
 
       const data = await res.json();
@@ -117,17 +133,15 @@ export function Checkout({
 
       const order = data.order;
 
-      /* ================= OPTIONS ================= */
-
       const options = {
         key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
-
         amount: order.amount,
         currency: "INR",
         order_id: order.id,
 
         name: "Blyzza",
         description: "Order Payment",
+
         handler: async function (response: any) {
 
           const {
@@ -156,8 +170,8 @@ export function Checkout({
                   email: formData.email,
                   phone: formData.phone,
                   address: formData.address,
-                  pincode: formData.pincode, // ✅ added
-                  total: finalTotal, // ✅ correct total
+                  pincode: formData.pincode,
+                  total: finalTotal,
                   items,
                 },
               }),
@@ -166,6 +180,7 @@ export function Checkout({
             const verifyData = await verifyRes.json();
 
             if (verifyData.success) {
+              fireConfetti(); // 🎉 blast
               setOrderPlaced(true);
             } else {
               alert("Payment verification failed");
@@ -216,19 +231,24 @@ export function Checkout({
     return (
       <div className="fixed inset-0 flex items-center justify-center bg-black/40 z-50">
         <div className="bg-white p-8 rounded-xl text-center">
+
           <h2 className="text-2xl font-bold text-green-600 mb-4">
             🎉 Order Placed Successfully!
           </h2>
 
           <button
             onClick={() => {
-              setOrderPlaced(false);
-              window.location.href = "/";
+              fireConfetti(); // 🎉 again blast
+              setTimeout(() => {
+                setOrderPlaced(false);
+                window.location.href = "/";
+              }, 800);
             }}
             className="bg-black text-white px-6 py-2 rounded"
           >
             Continue Shopping
           </button>
+
         </div>
       </div>
     );
@@ -263,7 +283,6 @@ export function Checkout({
             required
           />
 
-          {/* ✅ PRICE BREAKUP */}
           <div className="text-sm">Subtotal: ₹{total}</div>
           <div className="text-sm">Delivery: ₹{DELIVERY_CHARGE}</div>
           <div className="font-bold">Total: ₹{finalTotal}</div>

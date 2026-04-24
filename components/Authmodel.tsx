@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import supabase from "@/lib/supabase";
+import confetti from "canvas-confetti";
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -10,8 +11,7 @@ interface AuthModalProps {
 
 export function AuthModal({ isOpen, onClose }: AuthModalProps) {
   const [isSignup, setIsSignup] = useState(false);
-  const [showWelcome, setShowWelcome] = useState(false);
-  const [userName, setUserName] = useState("");
+  const [showReset, setShowReset] = useState(false);
 
   const [formData, setFormData] = useState({
     firstName: "",
@@ -20,58 +20,78 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
     password: "",
   });
 
-  if (!isOpen && !showWelcome) return null;
+  const [resetData, setResetData] = useState({
+    name: "",
+    email: "",
+    newPassword: "",
+    confirmPassword: "",
+  });
 
-  // Handle input
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
+  if (!isOpen) return null;
+
+  // 🎉 CONFETTI FUNCTION
+  const fireConfetti = () => {
+    confetti({
+      particleCount: 200,
+      spread: 120,
+      origin: { y: 0.6 },
     });
+
+    setTimeout(() => {
+      confetti({
+        particleCount: 150,
+        spread: 100,
+        origin: { x: 0.3, y: 0.6 },
+      });
+    }, 200);
+
+    setTimeout(() => {
+      confetti({
+        particleCount: 150,
+        spread: 100,
+        origin: { x: 0.7, y: 0.6 },
+      });
+    }, 400);
   };
 
-  // LOGIN FUNCTION
+  // INPUT HANDLE
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (showReset) {
+      setResetData({
+        ...resetData,
+        [e.target.name]: e.target.value,
+      });
+    } else {
+      setFormData({
+        ...formData,
+        [e.target.name]: e.target.value,
+      });
+    }
+  };
+
+  // LOGIN
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const { data, error } = await supabase.auth.signInWithPassword({
+    const { error } = await supabase.auth.signInWithPassword({
       email: formData.email,
       password: formData.password,
     });
 
-    if (error || !data.user) {
-      alert("Invalid login credentials ❌");
+    if (error) {
+      alert("Invalid login ❌");
       return;
     }
 
-    // ✅ FIXED: Safe profile fetch
-    const { data: profile, error: profileError } = await supabase
-      .from("profiles")
-      .select("first_name")
-      .eq("id", data.user.id)
-      .maybeSingle();
-
-    let name = "User";
-
-    if (!profileError && profile?.first_name) {
-      name = profile.first_name;
-    }
-
-    setUserName(name);
-
+    fireConfetti(); // 🎉 blast
     onClose();
-    setShowWelcome(true);
-
-    setTimeout(() => {
-      setShowWelcome(false);
-    }, 3000);
   };
 
-  // SIGNUP FUNCTION
+  // SIGNUP
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const { data, error } = await supabase.auth.signUp({
+    const { error } = await supabase.auth.signUp({
       email: formData.email,
       password: formData.password,
     });
@@ -81,58 +101,113 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
       return;
     }
 
-    if (data.user) {
-      // Insert profile safely
-      await supabase.from("profiles").insert([
-        {
-          id: data.user.id,
-          first_name: formData.firstName,
-          last_name: formData.lastName,
-          email: formData.email,
-        },
-      ]);
+    fireConfetti(); // 🎉 blast
+    setIsSignup(false);
+  };
+
+  // RESET PASSWORD
+  const handleResetPassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (resetData.newPassword !== resetData.confirmPassword) {
+      alert("Passwords do not match ❌");
+      return;
     }
 
-    setUserName(formData.firstName || "User");
+    const { error } = await supabase.auth.updateUser({
+      password: resetData.newPassword,
+    });
 
-    onClose();
-    setShowWelcome(true);
-
-    setTimeout(() => {
-      setShowWelcome(false);
-    }, 3000);
+    if (error) {
+      alert(error.message);
+    } else {
+      fireConfetti(); // 🎉 blast
+      setShowReset(false);
+    }
   };
 
   return (
-    <>
-      {/* LOGIN / SIGNUP MODAL */}
-      {isOpen && (
-        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-          <div className="bg-white shadow-lg p-6 w-[420px] relative rounded">
-            <h2 className="text-lg font-semibold mb-4">
-              {isSignup ? "Create Account" : "Login"}
-            </h2>
+    <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+      <div className="bg-white p-6 w-[420px] rounded relative">
 
-            <form
-              onSubmit={isSignup ? handleSignup : handleLogin}
-              className="space-y-4"
-            >
+        <h2 className="text-lg font-semibold mb-4">
+          {showReset
+            ? "Reset Password"
+            : isSignup
+            ? "Create Account"
+            : "Login"}
+        </h2>
+
+        <form
+          onSubmit={
+            showReset
+              ? handleResetPassword
+              : isSignup
+              ? handleSignup
+              : handleLogin
+          }
+          className="space-y-4"
+        >
+          {showReset ? (
+            <>
+              <input
+                name="name"
+                placeholder="Name"
+                className="w-full border p-2"
+                onChange={handleChange}
+              />
+
+              <input
+                name="email"
+                type="email"
+                placeholder="Email"
+                className="w-full border p-2"
+                onChange={handleChange}
+              />
+
+              <input
+                name="newPassword"
+                type="password"
+                placeholder="New Password"
+                className="w-full border p-2"
+                onChange={handleChange}
+              />
+
+              <input
+                name="confirmPassword"
+                type="password"
+                placeholder="Confirm Password"
+                className="w-full border p-2"
+                onChange={handleChange}
+              />
+
+              <button className="w-full bg-green-600 text-white py-3">
+                Update Password
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setShowReset(false)}
+                className="text-sm text-gray-500"
+              >
+                Back to Login
+              </button>
+            </>
+          ) : (
+            <>
               {isSignup && (
                 <>
                   <input
                     name="firstName"
                     placeholder="First Name"
-                    className="w-full border p-2 rounded"
+                    className="w-full border p-2"
                     onChange={handleChange}
-                    required
                   />
-
                   <input
                     name="lastName"
                     placeholder="Last Name"
-                    className="w-full border p-2 rounded"
+                    className="w-full border p-2"
                     onChange={handleChange}
-                    required
                   />
                 </>
               )}
@@ -141,7 +216,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
                 name="email"
                 type="email"
                 placeholder="Email"
-                className="w-full border p-2 rounded"
+                className="w-full border p-2"
                 onChange={handleChange}
                 required
               />
@@ -150,52 +225,52 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
                 name="password"
                 type="password"
                 placeholder="Password"
-                className="w-full border p-2 rounded"
+                className="w-full border p-2"
                 onChange={handleChange}
                 required
               />
 
-              <button
-                type="submit"
-                className="w-full bg-[#556b4f] text-white py-3 rounded"
-              >
+              {/* 🔥 FORGOT PASSWORD */}
+              {!isSignup && (
+                <div className="text-right">
+                  <button
+                    type="button"
+                    onClick={() => setShowReset(true)}
+                    className="text-sm text-blue-600 underline"
+                  >
+                    Forgot password?
+                  </button>
+                </div>
+              )}
+
+              <button className="w-full bg-[#556b4f] text-white py-3">
                 {isSignup ? "Create Account" : "Sign in"}
               </button>
-            </form>
+            </>
+          )}
+        </form>
 
-            <p className="text-center mt-4 text-sm">
-              {isSignup
-                ? "Already have an account?"
-                : "New customer?"}{" "}
-              <button
-                onClick={() => setIsSignup(!isSignup)}
-                className="text-blue-600 underline"
-              >
-                {isSignup ? "Login" : "Create account"}
-              </button>
-            </p>
-
+        {!showReset && (
+          <p className="text-center mt-4 text-sm">
+            {isSignup
+              ? "Already have an account?"
+              : "New customer?"}{" "}
             <button
-              onClick={onClose}
-              className="absolute top-2 right-3 text-lg"
+              onClick={() => setIsSignup(!isSignup)}
+              className="text-blue-600 underline"
             >
-              ✕
+              {isSignup ? "Login" : "Create account"}
             </button>
-          </div>
-        </div>
-      )}
+          </p>
+        )}
 
-      {/* 🎉 WELCOME POPUP */}
-      {showWelcome && (
-        <div className="fixed top-5 right-5 z-50">
-          <div className="bg-green-600 text-white px-6 py-4 rounded shadow-lg">
-            <p className="font-semibold text-lg">
-              🎉 Welcome {userName}!
-            </p>
-            <p className="text-sm">Login Successful</p>
-          </div>
-        </div>
-      )}
-    </>
+        <button
+          onClick={onClose}
+          className="absolute top-2 right-3 text-lg"
+        >
+          ✕
+        </button>
+      </div>
+    </div>
   );
 }

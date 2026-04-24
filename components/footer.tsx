@@ -115,7 +115,7 @@ export function Footer() {
         {/* Bottom */}
         <div className="pt-8 border-t border-primary-foreground/10 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-primary-foreground/50 text-sm">
-            © {currentYear} Blyzza. All rights reserved.
+            © 2025 Blyzza. All rights reserved.
           </p>
           <div className="flex gap-6">
             <Link

@@ -3,13 +3,14 @@
 import Image from "next/image";
 import { Plus } from "lucide-react";
 import { useState, useEffect } from "react";
+import Link from "next/link";
 
 export interface Product {
   id: number;
   name: string;
   sizes: string[];
   prices: number[];
-  image: string;
+  image: string[];
   category: string;
 }
 
@@ -28,14 +29,12 @@ export function ProductCard({
   const [selectedSizeIndex, setSelectedSizeIndex] = useState(0);
   const [mounted, setMounted] = useState(false);
 
-  /* 🔥 Fix hydration issue */
   useEffect(() => {
     setMounted(true);
   }, []);
 
   if (!mounted) return null;
 
-  /* 🔥 Safety checks */
   if (!product || !product.sizes || !product.prices) {
     console.error("❌ Invalid product data:", product);
     return null;
@@ -50,42 +49,47 @@ export function ProductCard({
 
   return (
     <div
-      className={`product-card group bg-card rounded-2xl overflow-hidden shadow-sm border border-border/50 ${
+      className={`product-card group relative bg-card rounded-2xl overflow-hidden shadow-sm border border-border/50 ${
         featured ? "col-span-1" : ""
       }`}
     >
-      {/* Image */}
-      <div className="relative aspect-square overflow-hidden bg-sage-light/30">
-        <Image
-          src={product.image}
-          alt={product.name}
-          fill
-          className="object-cover product-image"
-        />
 
-        {/* Quick Add */}
-        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none group-hover:pointer-events-auto">
+      {/* IMAGE */}
+      <div className="relative aspect-square overflow-hidden bg-sage-light/30">
+       <Image
+        src={product.image?.[0] || "/fallback.jpg"}
+        alt={product.name}
+        width={500}
+        height={500}
+        className="w-full object-cover"
+      />
+
+        {/* 🔥 HOVER OVERLAY */}
+        <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center gap-3 opacity-0 group-hover:opacity-100 transition duration-300">
+
+          {/* VIEW DETAILS */}
+          <Link
+            href={`/product/${product.id}`}
+            className="bg-white text-black px-4 py-2 rounded-full text-sm font-medium"
+          >
+            View Benefits
+          </Link>
+
+          {/* QUICK ADD */}
           <button
             onClick={() => {
-              console.log(
-                  "🛒 ADD:",
-                  product.name,
-                  "SizeIndex:",
-                  safeSizeIndex,
-                  "Price:",
-                  price
-                );
               onAddToCart(product, safeSizeIndex);
             }}
-            className="bg-card text-foreground px-6 py-3 rounded-full font-medium shadow-lg hover:bg-primary hover:text-primary-foreground transition-colors duration-200 flex items-center gap-2"
+            className="bg-primary text-white px-4 py-2 rounded-full text-sm flex items-center gap-2"
           >
             <Plus className="w-4 h-4" />
-            Add to Cart
+            Add
           </button>
+
         </div>
       </div>
 
-      {/* Content */}
+      {/* CONTENT */}
       <div className="p-5">
 
         <span className="text-xs text-muted-foreground uppercase tracking-wider">
@@ -96,18 +100,15 @@ export function ProductCard({
           {product.name}
         </h3>
 
-        {/* Sizes */}
+        {/* SIZES */}
         <div className="flex flex-wrap gap-2 mb-3">
           {product.sizes.map((size, index) => (
             <button
               key={size}
-              onClick={() => {
-                console.log("SIZE CLICK:", size, index);
-                setSelectedSizeIndex(index);
-              }}
+              onClick={() => setSelectedSizeIndex(index)}
               className={`text-xs px-3 py-1 rounded-full border transition ${
                 safeSizeIndex === index
-                  ? "bg-primary text-primary-foreground"
+                  ? "bg-primary text-white"
                   : "bg-muted text-muted-foreground"
               }`}
             >
@@ -116,7 +117,7 @@ export function ProductCard({
           ))}
         </div>
 
-        {/* Price + Add */}
+        {/* PRICE + ADD */}
         <div className="flex items-center justify-between">
 
           <span className="text-primary font-semibold text-lg">
@@ -124,18 +125,10 @@ export function ProductCard({
           </span>
 
           <button
-            onClick={() => {
-              console.log(
-                "➕ BUTTON ADD:",
-                product.name,
-                "SizeIndex:",
-                safeSizeIndex,
-                "Price:",
-                price
-              );
-              onAddToCart(product, safeSizeIndex);
-            }}
-            className="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors duration-200"
+            onClick={() =>
+              onAddToCart(product, safeSizeIndex)
+            }
+            className="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center hover:bg-primary hover:text-white transition"
           >
             <Plus className="w-5 h-5" />
           </button>
