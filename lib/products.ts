@@ -200,21 +200,6 @@ export const products: Product[] = [
   ingredients: `100% Natural Senna Leaves Powder`,
 },
   {
-    id: 7,
-    name: "Goat milk white soap",
-    sizes: ["100gm"],
-    prices: [199],
-    image: ["/about/goatmilk1.jpg",
-      "/about/goatmilk2.jpg",
-      "/about/goatmilk3.jpg",
-      "/about/goatmilk4.jpg",
-      "/about/goatmilk5.jpg",
-      "/about/goatmilk6.jpg",
-      "/about/goatmilk7.jpg"
-    ],
-    category: "soaps",
-  },
-  {
   id: 7,
   name: "Goat Milk White Soap",
 
@@ -230,6 +215,42 @@ export const products: Product[] = [
     "/about/goatmilk5.jpg",
     "/about/goatmilk6.jpg",
     "/about/goatmilk7.jpg"
+  ],
+
+  category: "soaps",
+
+  // ✅ DESCRIPTION 🔥
+  description: `Experience the gentle nourishment of BLYZZA Goat Milk White Soap, crafted using traditional methods and enriched with the goodness of goat milk. Known for its moisturizing properties, goat milk helps hydrate the skin deeply while maintaining its natural softness. This soap produces a rich, creamy lather that gently cleanses without stripping away natural oils, leaving your skin feeling smooth, supple, and refreshed. Ideal for daily use, it is suitable for all skin types, especially dry and sensitive skin.`,
+
+  // ✅ BENEFITS 🔥
+  benefits: `• Deeply moisturizes and nourishes skin  
+• Helps maintain soft and smooth texture  
+• Gentle cleansing without dryness  
+• Supports healthy-looking skin  
+• Suitable for dry and sensitive skin`,
+
+  // ✅ HOW TO USE 🔥
+  howToUse: `Wet your skin and gently apply the soap to create a rich lather. Massage softly over face and body, then rinse thoroughly with water. Use daily for clean, soft, and refreshed skin.`,
+
+  // ✅ INGREDIENTS 🔥
+  ingredients: `Goat Milk, Natural Oils, Herbal Base`,
+},
+{
+  id: 8,
+  name: "Neem Soap",
+
+  sizes: ["100gm"],
+  prices: [199],
+
+  // ✅ FIXED
+  image: [
+    "/about/Neem1.jpg",
+    "/about/Neem2.jpg",
+    "/about/Neem3.jpg",
+    "/about/Neem4.jpg",
+    "/about/Neem5.jpg",
+    "/about/Neem6.jpg",
+    "/about/Neem7.jpg"
   ],
 
   category: "soaps",
