@@ -5,10 +5,9 @@ import { ProductCard, Product } from "./product-card";
 
 interface FeaturedProductsProps {
   products: Product[];
-  onAddToCart: (product: Product, sizeIndex: number) => void;
 }
 
-export function FeaturedProducts({ products, onAddToCart }: FeaturedProductsProps) {
+export function FeaturedProducts({ products }: FeaturedProductsProps) {
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
 
@@ -38,6 +37,7 @@ export function FeaturedProducts({ products, onAddToCart }: FeaturedProductsProp
       className="py-20 md:py-28 bg-cream"
     >
       <div className="container mx-auto px-4 md:px-6">
+        
         {/* Header */}
         <div
           className={`text-center max-w-2xl mx-auto mb-16 transition-all duration-700 ${
@@ -70,12 +70,12 @@ export function FeaturedProducts({ products, onAddToCart }: FeaturedProductsProp
             >
               <ProductCard
                 product={product}
-                onAddToCart={onAddToCart}
                 featured
               />
             </div>
           ))}
         </div>
+
       </div>
     </section>
   );

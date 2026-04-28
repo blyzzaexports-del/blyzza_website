@@ -16,7 +16,7 @@ interface CheckoutProps {
   items: any[];
 }
 
-export function Checkout({
+export default function Checkout({
   isOpen,
   onClose,
   total,
@@ -37,10 +37,9 @@ export function Checkout({
   const [loading, setLoading] = useState(false);
   const [orderPlaced, setOrderPlaced] = useState(false);
 
-  /* 🎉 CONFETTI FUNCTION */
+  /* 🎉 CONFETTI */
   const fireConfetti = () => {
-    const duration = 2 * 1000;
-    const end = Date.now() + duration;
+    const end = Date.now() + 2000;
 
     (function frame() {
       confetti({
@@ -49,14 +48,11 @@ export function Checkout({
         origin: { y: 0.6 },
       });
 
-      if (Date.now() < end) {
-        requestAnimationFrame(frame);
-      }
+      if (Date.now() < end) requestAnimationFrame(frame);
     })();
   };
 
-  /* ================= INPUT ================= */
-
+  /* INPUT */
   const handleChange = (e: any) => {
     setFormData({
       ...formData,
@@ -64,19 +60,13 @@ export function Checkout({
     });
   };
 
-  /* ================= LOAD RAZORPAY ================= */
-
+  /* LOAD RAZORPAY */
   const loadRazorpay = () => {
     return new Promise((resolve) => {
-      if (window.Razorpay) {
-        resolve(true);
-        return;
-      }
+      if (window.Razorpay) return resolve(true);
 
       const script = document.createElement("script");
       script.src = "https://checkout.razorpay.com/v1/checkout.js";
-      script.async = true;
-
       script.onload = () => resolve(true);
       script.onerror = () => resolve(false);
 
@@ -84,8 +74,7 @@ export function Checkout({
     });
   };
 
-  /* ================= SUBMIT ================= */
-
+  /* SUBMIT */
   const handleSubmit = async (e: any) => {
     e.preventDefault();
 
@@ -95,12 +84,12 @@ export function Checkout({
       !formData.address ||
       !formData.pincode
     ) {
-      alert("Please fill all required fields including pincode");
+      alert("Fill all required fields");
       return;
     }
 
     if (!/^[0-9]{6}$/.test(formData.pincode)) {
-      alert("Please enter a valid 6-digit pincode");
+      alert("Invalid pincode");
       return;
     }
 
@@ -110,11 +99,12 @@ export function Checkout({
       const loaded = await loadRazorpay();
 
       if (!loaded) {
-        alert("Razorpay SDK failed");
+        alert("Razorpay load failed");
         setLoading(false);
         return;
       }
 
+      /* CREATE ORDER */
       const res = await fetch("/api/create-order", {
         method: "POST",
         headers: {
@@ -125,7 +115,7 @@ export function Checkout({
 
       const data = await res.json();
 
-      if (!data.success || !data.order) {
+      if (!data.success) {
         alert("Order creation failed");
         setLoading(false);
         return;
@@ -143,7 +133,6 @@ export function Checkout({
         description: "Order Payment",
 
         handler: async function (response: any) {
-
           const {
             razorpay_payment_id,
             razorpay_order_id,
@@ -156,6 +145,12 @@ export function Checkout({
           }
 
           try {
+            /* GET USER */
+            const user = JSON.parse(
+              localStorage.getItem("user") || "null"
+            );
+
+            /* VERIFY + SAVE ORDER */
             const verifyRes = await fetch("/api/verify-payment", {
               method: "POST",
               headers: {
@@ -166,6 +161,7 @@ export function Checkout({
                 razorpay_payment_id,
                 razorpay_signature,
                 orderData: {
+                  user_id: user?.id || null, // ✅ FIX
                   first_name: formData.name,
                   email: formData.email,
                   phone: formData.phone,
@@ -180,22 +176,18 @@ export function Checkout({
             const verifyData = await verifyRes.json();
 
             if (verifyData.success) {
-              fireConfetti(); // 🎉 blast
+              fireConfetti();
               setOrderPlaced(true);
+
+              // ✅ CLEAR CART AFTER SUCCESS
+              localStorage.removeItem("cart");
             } else {
               alert("Payment verification failed");
             }
-
           } catch (err) {
-            console.error("VERIFY ERROR:", err);
+            console.error(err);
             alert("Verification error");
           }
-        },
-
-        modal: {
-          ondismiss: function () {
-            console.log("Payment closed");
-          },
         },
 
         prefill: {
@@ -211,22 +203,20 @@ export function Checkout({
 
       const rzp = new window.Razorpay(options);
 
-      rzp.on("payment.failed", function () {
+      rzp.on("payment.failed", () => {
         alert("Payment failed");
       });
 
       rzp.open();
-
     } catch (err) {
-      console.error("PAYMENT ERROR:", err);
-      alert("Payment failed");
+      console.error(err);
+      alert("Payment error");
     }
 
     setLoading(false);
   };
 
-  /* ================= SUCCESS ================= */
-
+  /* SUCCESS UI */
   if (orderPlaced) {
     return (
       <div className="fixed inset-0 flex items-center justify-center bg-black/40 z-50">
@@ -238,11 +228,8 @@ export function Checkout({
 
           <button
             onClick={() => {
-              fireConfetti(); // 🎉 again blast
-              setTimeout(() => {
-                setOrderPlaced(false);
-                window.location.href = "/";
-              }, 800);
+              setOrderPlaced(false);
+              window.location.href = "/";
             }}
             className="bg-black text-white px-6 py-2 rounded"
           >
@@ -256,11 +243,8 @@ export function Checkout({
 
   if (!isOpen) return null;
 
-  /* ================= UI ================= */
-
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black/30 z-50">
-
       <div className="bg-white p-6 rounded-xl w-full max-w-md">
 
         <h2 className="text-xl font-bold mb-4">Checkout</h2>
@@ -275,13 +259,7 @@ export function Checkout({
 
           <textarea name="address" placeholder="Address" onChange={handleChange} className="w-full border p-2" required />
 
-          <input
-            name="pincode"
-            placeholder="Pincode"
-            onChange={handleChange}
-            className="w-full border p-2"
-            required
-          />
+          <input name="pincode" placeholder="Pincode" onChange={handleChange} className="w-full border p-2" required />
 
           <div className="text-sm">Subtotal: ₹{total}</div>
           <div className="text-sm">Delivery: ₹{DELIVERY_CHARGE}</div>
@@ -298,7 +276,6 @@ export function Checkout({
         </button>
 
       </div>
-
     </div>
   );
 }

@@ -9,9 +9,7 @@ import {
 } from "lucide-react";
 
 import Link from "next/link";
-
 import { AuthModal } from "./Authmodel";
-
 import supabase from "@/lib/supabase";
 import Image from "next/image";
 
@@ -25,73 +23,55 @@ export function Navbar({
   onCartClick,
 }: NavbarProps) {
 
-  const [isScrolled, setIsScrolled] =
-    useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isAuthOpen, setIsAuthOpen] = useState(false);
+  const [user, setUser] = useState<any>(null);
 
-  const [isMobileMenuOpen,
-    setIsMobileMenuOpen] =
-    useState(false);
-
-  const [isAuthOpen,
-    setIsAuthOpen] =
-    useState(false);
-
-  const [user,
-    setUser] = useState<any>(null);
-
-  // Detect scroll
-
+  /* 🔥 SCROLL EFFECT */
   useEffect(() => {
-
     const handleScroll = () => {
-
-      setIsScrolled(
-        window.scrollY > 20
-      );
-
+      setIsScrolled(window.scrollY > 20);
     };
 
-    window.addEventListener(
-      "scroll",
-      handleScroll
-    );
+    window.addEventListener("scroll", handleScroll);
 
     return () =>
-      window.removeEventListener(
-        "scroll",
-        handleScroll
-      );
-
+      window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Get Logged User
-
+  /* 🔥 USER SESSION (REALTIME) */
   useEffect(() => {
 
-    const getUser =
-      async () => {
+    const getUser = async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
 
-        const {
-          data: { user },
-        } =
-          await supabase.auth.getUser();
-
-        setUser(user);
-
-      };
+      setUser(user);
+    };
 
     getUser();
+
+    const { data: listener } =
+      supabase.auth.onAuthStateChange(
+        (_event, session) => {
+          setUser(session?.user || null);
+        }
+      );
+
+    return () => {
+      listener.subscription.unsubscribe();
+    };
 
   }, []);
 
   const navLinks = [
-
     { href: "#home", label: "Home" },
     { href: "#shop", label: "Shop" },
     { href: "#products", label: "Products" },
     { href: "#about", label: "About" },
     { href: "#contact", label: "Contact" },
-
   ];
 
   return (
@@ -109,13 +89,9 @@ export function Navbar({
         <div className="flex items-center justify-between">
 
           {/* LOGO */}
-
-          <Link
-            href="#home"
-            className="flex items-center"
-          >
+          <Link href="#home" className="flex items-center">
             <Image
-              src="about/logo.png"   // 👉 உங்கள் logo file name
+              src="/about/logo.png"
               alt="Blyzza Logo"
               width={140}
               height={50}
@@ -123,102 +99,91 @@ export function Navbar({
             />
           </Link>
 
-          {/* Desktop Navigation */}
-
+          {/* DESKTOP NAV */}
           <div className="hidden md:flex items-center gap-8">
 
             {navLinks.map((link) => (
-
               <Link
                 key={link.href}
                 href={link.href}
                 className="text-sm font-medium hover:text-primary"
               >
-
                 {link.label}
-
               </Link>
-
             ))}
 
-            {/* ✅ MY ORDERS LINK */}
-
-            {/* {user && (
-
+            {user && (
               <Link
                 href="/my-orders"
                 className="text-sm font-medium hover:text-primary"
               >
-
                 My Orders
-
               </Link>
-
-            )} */}
+            )}
 
           </div>
 
-          {/* RIGHT SIDE ICONS */}
-
+          {/* RIGHT SIDE */}
           <div className="flex items-center gap-3">
 
-            {/* 👤 HUMAN ICON */}
+            {/* 👤 LOGIN / LOGOUT */}
+            {user ? (
+              <div className="flex items-center gap-2">
 
+                <span className="text-sm font-medium">
+                  Hi 👋
+                </span>
+
+                {/* ✅ FIXED LOGOUT */}
+                <button
+                  onClick={async () => {
+                    await supabase.auth.signOut();
+                    // ❌ NO reload (important)
+                  }}
+                  className="text-sm bg-black text-white px-3 py-1 rounded"
+                >
+                  Logout
+                </button>
+
+              </div>
+            ) : (
+              <button
+                onClick={() => setIsAuthOpen(true)}
+                className="p-2 hover:bg-gray-200 rounded-full"
+              >
+                <User className="w-6 h-6 text-black" />
+              </button>
+            )}
+
+            {/* 🛒 CART */}
             <button
-              onClick={() =>
-                setIsAuthOpen(true)
-              }
-              className="p-2 hover:bg-gray-200 rounded-full"
-              aria-label="Login"
-            >
-
-              <User className="w-6 h-6 text-black" />
-
-            </button>
-
-            {/* 🛒 CART ICON */}
-
-            <button
-              onClick={onCartClick}
+              onClick={() => {
+                window.dispatchEvent(new Event("open-cart"));
+              }}
               className="relative p-2 hover:bg-gray-200 rounded-full"
-              aria-label="Cart"
             >
-
               <ShoppingBag className="w-6 h-6 text-black" />
 
               {cartCount > 0 && (
-
                 <span className="absolute -top-1 -right-1 w-5 h-5 bg-primary text-white text-xs rounded-full flex items-center justify-center">
-
                   {cartCount}
-
                 </span>
-
               )}
 
             </button>
 
-            {/* MOBILE MENU */}
-
+            {/* 📱 MOBILE MENU */}
             <button
               onClick={() =>
-                setIsMobileMenuOpen(
-                  !isMobileMenuOpen
-                )
+                setIsMobileMenuOpen(!isMobileMenuOpen)
               }
               className="md:hidden p-2"
             >
-
               {isMobileMenuOpen ? (
-
                 <X className="w-5 h-5" />
-
               ) : (
-
                 <Menu className="w-5 h-5" />
-
               )}
-
             </button>
 
           </div>
@@ -226,15 +191,11 @@ export function Navbar({
         </div>
 
         {/* MOBILE NAV */}
-
         {isMobileMenuOpen && (
-
           <div className="md:hidden mt-4 pb-4">
-
             <div className="flex flex-col gap-3">
 
               {navLinks.map((link) => (
-
                 <Link
                   key={link.href}
                   href={link.href}
@@ -243,17 +204,11 @@ export function Navbar({
                   }
                   className="py-2"
                 >
-
                   {link.label}
-
                 </Link>
-
               ))}
 
-              {/* ✅ MOBILE MY ORDERS */}
-
               {user && (
-
                 <Link
                   href="/my-orders"
                   className="py-2"
@@ -261,23 +216,17 @@ export function Navbar({
                     setIsMobileMenuOpen(false)
                   }
                 >
-
                   My Orders
-
                 </Link>
-
               )}
 
             </div>
-
           </div>
-
         )}
 
       </div>
 
       {/* AUTH MODAL */}
-
       <AuthModal
         isOpen={isAuthOpen}
         onClose={() =>
@@ -286,7 +235,5 @@ export function Navbar({
       />
 
     </nav>
-
   );
-
 }

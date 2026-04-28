@@ -273,7 +273,7 @@ export const products: Product[] = [
 },
   {
   id: 9,
-  name: "Nettle Soap",
+  name: "Nettle Soap(Kuppaimeni)",
 
   sizes: ["100gm"],
   prices: [229],

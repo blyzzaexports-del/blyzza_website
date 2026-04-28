@@ -2,19 +2,21 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { Cart } from "@/components/cart";
-import { Checkout } from "@/components/checkout";
+import Checkout from "@/components/checkout";
 
 export default function ClientProviders({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  /* 🛒 STATE */
+
   const [cartItems, setCartItems] = useState<any[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
 
-  /* 🛒 ADD TO CART (MERGE SAME PRODUCT) */
+  const [isLoaded, setIsLoaded] = useState(false); // ✅ FIX FLAG
+
+  /* 🛒 ADD TO CART */
   const handleAddToCart = useCallback(
     (product: any, sizeIndex: number, quantity: number = 1) => {
       setCartItems((prev) => {
@@ -30,7 +32,7 @@ export default function ClientProviders({
             item.sizeIndex === sizeIndex
               ? {
                   ...item,
-                  quantity: item.quantity + quantity, // ✅ FIX HERE
+                  quantity: item.quantity + quantity,
                 }
               : item
           );
@@ -41,7 +43,7 @@ export default function ClientProviders({
           {
             product,
             sizeIndex,
-            quantity: quantity, // ✅ FIX
+            quantity,
           },
         ];
       });
@@ -51,7 +53,7 @@ export default function ClientProviders({
     []
   );
 
-  /* 🔢 UPDATE QUANTITY */
+  /* 🔢 UPDATE QTY */
   const handleUpdateQuantity = useCallback(
     (productId: number, sizeIndex: number, delta: number) => {
       setCartItems((prev) =>
@@ -62,7 +64,6 @@ export default function ClientProviders({
               item.sizeIndex === sizeIndex
             ) {
               const newQuantity = item.quantity + delta;
-
               return newQuantity > 0
                 ? { ...item, quantity: newQuantity }
                 : item;
@@ -91,13 +92,13 @@ export default function ClientProviders({
     []
   );
 
-  /* 🎧 GLOBAL EVENTS */
+  /* 🎧 EVENTS */
   useEffect(() => {
     const add = (e: any) => {
       handleAddToCart(
         e.detail.product,
         e.detail.sizeIndex,
-        e.detail.quantity || 1 // ✅ FIX
+        e.detail.quantity || 1
       );
     };
 
@@ -119,6 +120,24 @@ export default function ClientProviders({
     };
   }, [handleAddToCart]);
 
+  /* 🧠 LOAD CART (FIRST) */
+  useEffect(() => {
+    const savedCart = localStorage.getItem("cart");
+
+    if (savedCart) {
+      setCartItems(JSON.parse(savedCart));
+    }
+
+    setIsLoaded(true); // ✅ important
+  }, []);
+
+  /* 💾 SAVE CART (AFTER LOAD) */
+  useEffect(() => {
+    if (!isLoaded) return; // ❌ prevent overwrite
+
+    localStorage.setItem("cart", JSON.stringify(cartItems));
+  }, [cartItems, isLoaded]);
+
   /* 💰 TOTAL */
   const total = cartItems.reduce(
     (sum, item) =>
@@ -130,20 +149,18 @@ export default function ClientProviders({
     <>
       {children}
 
-      {/* 🛒 CART */}
       <Cart
         isOpen={isCartOpen}
         onClose={() => setIsCartOpen(false)}
         items={cartItems}
-        onUpdateQuantity={handleUpdateQuantity} // ✅ FIXED
-        onRemoveItem={handleRemoveItem} // ✅ FIXED
+        onUpdateQuantity={handleUpdateQuantity}
+        onRemoveItem={handleRemoveItem}
         onCheckout={() => {
           setIsCartOpen(false);
           setIsCheckoutOpen(true);
         }}
       />
 
-      {/* ⚡ CHECKOUT */}
       <Checkout
         isOpen={isCheckoutOpen}
         onClose={() => setIsCheckoutOpen(false)}

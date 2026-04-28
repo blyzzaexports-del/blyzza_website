@@ -5,10 +5,9 @@ import { ProductCard, Product } from "./product-card";
 
 interface AllProductsProps {
   products: Product[];
-  onAddToCart: (product: Product, sizeIndex: number) => void;
 }
 
-export function AllProducts({ products, onAddToCart }: AllProductsProps) {
+export function AllProducts({ products }: AllProductsProps) {
   const [isVisible, setIsVisible] = useState(false);
   const [filter, setFilter] = useState<string>("all");
   const sectionRef = useRef<HTMLElement>(null);
@@ -31,7 +30,7 @@ export function AllProducts({ products, onAddToCart }: AllProductsProps) {
   }, []);
 
   const categories = ["all", ...new Set(products.map((p) => p.category))];
-  
+
   const filteredProducts =
     filter === "all"
       ? products
@@ -44,6 +43,7 @@ export function AllProducts({ products, onAddToCart }: AllProductsProps) {
       className="py-20 md:py-28 bg-background"
     >
       <div className="container mx-auto px-4 md:px-6">
+
         {/* Header */}
         <div
           className={`text-center max-w-2xl mx-auto mb-12 transition-all duration-700 ${
@@ -94,10 +94,11 @@ export function AllProducts({ products, onAddToCart }: AllProductsProps) {
               }`}
               style={{ transitionDelay: `${Math.min(index * 50, 500)}ms` }}
             >
-              <ProductCard product={product} onAddToCart={onAddToCart} />
+              <ProductCard product={product} />
             </div>
           ))}
         </div>
+
       </div>
     </section>
   );

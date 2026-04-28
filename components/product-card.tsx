@@ -20,13 +20,11 @@ export interface Product {
 
 interface ProductCardProps {
   product: Product;
-  onAddToCart: (product: Product, sizeIndex: number) => void;
   featured?: boolean;
 }
 
 export function ProductCard({
   product,
-  onAddToCart,
   featured = false,
 }: ProductCardProps) {
 
@@ -51,6 +49,19 @@ export function ProductCard({
 
   const price = product.prices[safeSizeIndex];
 
+  // ✅ ADD TO CART FUNCTION (EVENT BASED)
+  const handleAdd = () => {
+    window.dispatchEvent(
+      new CustomEvent("add-to-cart", {
+        detail: {
+          product,
+          sizeIndex: safeSizeIndex,
+          quantity: 1,
+        },
+      })
+    );
+  };
+
   return (
     <div
       className={`product-card group relative bg-card rounded-2xl overflow-hidden shadow-sm border border-border/50 ${
@@ -60,18 +71,17 @@ export function ProductCard({
 
       {/* IMAGE */}
       <div className="relative aspect-square overflow-hidden bg-sage-light/30">
-       <Image
-        src={product.image?.[0] || "/fallback.jpg"}
-        alt={product.name}
-        width={500}
-        height={500}
-        className="w-full object-cover"
-      />
+        <Image
+          src={product.image?.[0] || "/fallback.jpg"}
+          alt={product.name}
+          width={500}
+          height={500}
+          className="w-full object-cover"
+        />
 
-        {/* 🔥 HOVER OVERLAY */}
+        {/* HOVER */}
         <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center gap-3 opacity-0 group-hover:opacity-100 transition duration-300">
 
-          {/* VIEW DETAILS */}
           <Link
             href={`/product/${product.id}`}
             className="bg-white text-black px-4 py-2 rounded-full text-sm font-medium"
@@ -79,11 +89,8 @@ export function ProductCard({
             View Benefits
           </Link>
 
-          {/* QUICK ADD */}
           <button
-            onClick={() => {
-              onAddToCart(product, safeSizeIndex);
-            }}
+            onClick={handleAdd}
             className="bg-primary text-white px-4 py-2 rounded-full text-sm flex items-center gap-2"
           >
             <Plus className="w-4 h-4" />
@@ -129,9 +136,7 @@ export function ProductCard({
           </span>
 
           <button
-            onClick={() =>
-              onAddToCart(product, safeSizeIndex)
-            }
+            onClick={handleAdd}
             className="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center hover:bg-primary hover:text-white transition"
           >
             <Plus className="w-5 h-5" />
