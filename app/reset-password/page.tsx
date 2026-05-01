@@ -1,13 +1,36 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import supabase from "@/lib/supabase";
 
 export default function ResetPasswordPage() {
+  const router = useRouter();
 
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(true);
+
+  // 🔥 IMPORTANT: Check session from email link
+  useEffect(() => {
+    const checkSession = async () => {
+      const { data } = await supabase.auth.getSession();
+
+      if (!data.session) {
+        alert("Invalid or expired reset link ❌");
+        router.push("/");
+      } else {
+        setLoading(false);
+      }
+    };
+
+    checkSession();
+  }, []);
 
   const handleReset = async () => {
+    if (!password) {
+      alert("Enter new password ❌");
+      return;
+    }
 
     const { error } = await supabase.auth.updateUser({
       password,
@@ -17,13 +40,20 @@ export default function ResetPasswordPage() {
       alert(error.message);
     } else {
       alert("Password updated successfully ✅");
-      window.location.href = "/login";
+      router.push("/login");
     }
   };
 
+  if (loading) {
+    return (
+      <div className="flex h-screen items-center justify-center">
+        Checking link...
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen flex items-center justify-center">
-
       <div className="w-[500px]">
 
         <h1 className="text-2xl text-center mb-6">
@@ -45,7 +75,6 @@ export default function ResetPasswordPage() {
         </button>
 
       </div>
-
     </div>
   );
 }
