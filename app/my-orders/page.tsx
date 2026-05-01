@@ -150,11 +150,11 @@ export default function MyOrders() {
 
     <div className="min-h-screen p-8 bg-gray-50">
 
-      <h1 className="text-3xl font-bold mb-8">
+      {/* <h1 className="text-3xl font-bold mb-8">
 
         My Orders
 
-      </h1>
+      </h1> */}
 
       {loading && (
 

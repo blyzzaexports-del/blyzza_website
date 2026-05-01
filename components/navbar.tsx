@@ -40,7 +40,7 @@ export function Navbar({
       window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  /* 🔥 USER SESSION (REALTIME) */
+  /* 🔥 USER SESSION */
   useEffect(() => {
 
     const getUser = async () => {
@@ -79,11 +79,10 @@ export function Navbar({
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled
-          ? "glass shadow-md py-3"
+          ? "bg-white/90 backdrop-blur-md shadow-md py-3"
           : "bg-transparent py-5"
       }`}
     >
-
       <div className="container mx-auto px-4 md:px-6">
 
         <div className="flex items-center justify-between">
@@ -112,48 +111,28 @@ export function Navbar({
               </Link>
             ))}
 
-            {user && (
+            {/* ✅ Only show if logged in */}
+            {/* {user && (
               <Link
                 href="/my-orders"
                 className="text-sm font-medium hover:text-primary"
               >
                 My Orders
               </Link>
-            )}
+            )} */}
 
           </div>
 
           {/* RIGHT SIDE */}
           <div className="flex items-center gap-3">
 
-            {/* 👤 LOGIN / LOGOUT */}
-            {user ? (
-              <div className="flex items-center gap-2">
-
-                <span className="text-sm font-medium">
-                  Hi 👋
-                </span>
-
-                {/* ✅ FIXED LOGOUT */}
-                <button
-                  onClick={async () => {
-                    await supabase.auth.signOut();
-                    // ❌ NO reload (important)
-                  }}
-                  className="text-sm bg-black text-white px-3 py-1 rounded"
-                >
-                  Logout
-                </button>
-
-              </div>
-            ) : (
-              <button
-                onClick={() => setIsAuthOpen(true)}
-                className="p-2 hover:bg-gray-200 rounded-full"
-              >
-                <User className="w-6 h-6 text-black" />
-              </button>
-            )}
+            {/* ✅ ALWAYS LOGIN ICON */}
+            <button
+              onClick={() => setIsAuthOpen(true)}
+              className="p-2 hover:bg-gray-200 rounded-full"
+            >
+              <User className="w-6 h-6 text-black" />
+            </button>
 
             {/* 🛒 CART */}
             <button
@@ -208,7 +187,8 @@ export function Navbar({
                 </Link>
               ))}
 
-              {user && (
+              {/* ✅ Only for logged in */}
+              {/* {user && (
                 <Link
                   href="/my-orders"
                   className="py-2"
@@ -218,7 +198,7 @@ export function Navbar({
                 >
                   My Orders
                 </Link>
-              )}
+              )} */}
 
             </div>
           </div>
