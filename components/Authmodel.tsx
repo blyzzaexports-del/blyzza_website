@@ -3,6 +3,7 @@
 import { useState } from "react";
 import supabase from "@/lib/supabase";
 import confetti from "canvas-confetti";
+import { Toast } from "@/components/Toast"; // ✅ add this
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -27,6 +28,12 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
     confirmPassword: "",
   });
 
+  // ✅ TOAST STATE
+  const [toast, setToast] = useState<{
+    message: string;
+    type: "success" | "error";
+  } | null>(null);
+
   if (!isOpen) return null;
 
   // 🎉 CONFETTI FUNCTION
@@ -36,22 +43,6 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
       spread: 120,
       origin: { y: 0.6 },
     });
-
-    setTimeout(() => {
-      confetti({
-        particleCount: 150,
-        spread: 100,
-        origin: { x: 0.3, y: 0.6 },
-      });
-    }, 200);
-
-    setTimeout(() => {
-      confetti({
-        particleCount: 150,
-        spread: 100,
-        origin: { x: 0.7, y: 0.6 },
-      });
-    }, 400);
   };
 
   // INPUT HANDLE
@@ -79,11 +70,11 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
     });
 
     if (error) {
-      alert("Invalid login ❌");
+      setToast({ message: "Invalid login ❌", type: "error" });
       return;
     }
 
-    fireConfetti(); // 🎉 blast
+    fireConfetti();
     onClose();
   };
 
@@ -97,11 +88,12 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
     });
 
     if (error) {
-      alert(error.message);
+      setToast({ message: error.message, type: "error" });
       return;
     }
 
-    fireConfetti(); // 🎉 blast
+    fireConfetti();
+    setToast({ message: "Account created 🎉", type: "success" });
     setIsSignup(false);
   };
 
@@ -109,25 +101,27 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
   const handleResetPassword = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (resetData.newPassword !== resetData.confirmPassword) {
-      alert("Passwords do not match ❌");
-      return;
-    }
-
-    const { error } = await supabase.auth.updateUser({
-      password: resetData.newPassword,
-    });
+    const { error } = await supabase.auth.resetPasswordForEmail(
+      resetData.email,
+      {
+        redirectTo: "http://localhost:3000/reset-password",
+      }
+    );
 
     if (error) {
-      alert(error.message);
+      setToast({ message: error.message, type: "error" });
     } else {
-      fireConfetti(); // 🎉 blast
+      setToast({
+        message: "Reset link sent to your email 📩",
+        type: "success",
+      });
       setShowReset(false);
     }
   };
 
   return (
     <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+      
       <div className="bg-white p-6 w-[420px] rounded relative">
 
         <h2 className="text-lg font-semibold mb-4">
@@ -151,38 +145,16 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
           {showReset ? (
             <>
               <input
-                name="name"
-                placeholder="Name"
-                className="w-full border p-2"
-                onChange={handleChange}
-              />
-
-              <input
                 name="email"
                 type="email"
-                placeholder="Email"
+                placeholder="Enter your email"
                 className="w-full border p-2"
                 onChange={handleChange}
-              />
-
-              <input
-                name="newPassword"
-                type="password"
-                placeholder="New Password"
-                className="w-full border p-2"
-                onChange={handleChange}
-              />
-
-              <input
-                name="confirmPassword"
-                type="password"
-                placeholder="Confirm Password"
-                className="w-full border p-2"
-                onChange={handleChange}
+                required
               />
 
               <button className="w-full bg-green-600 text-white py-3">
-                Update Password
+                Send Reset Link
               </button>
 
               <button
@@ -230,7 +202,6 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
                 required
               />
 
-              {/* 🔥 FORGOT PASSWORD */}
               {!isSignup && (
                 <div className="text-right">
                   <button
@@ -271,6 +242,15 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
           ✕
         </button>
       </div>
+
+      {/* ✅ TOAST HERE */}
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast(null)}
+        />
+      )}
     </div>
   );
 }

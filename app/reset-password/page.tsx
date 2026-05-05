@@ -2,12 +2,31 @@
 
 import { useState } from "react";
 import supabase from "@/lib/supabase";
+import { useRouter } from "next/navigation";
+import confetti from "canvas-confetti";
 
 export default function ResetPasswordPage() {
 
+  const router = useRouter();
+
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+  const fireConfetti = () => {
+    confetti({
+      particleCount: 200,
+      spread: 120,
+      origin: { y: 0.6 },
+    });
+  };
 
   const handleReset = async () => {
+
+    // ✅ check match
+    if (password !== confirmPassword) {
+      alert("Passwords do not match ❌");
+      return;
+    }
 
     const { error } = await supabase.auth.updateUser({
       password,
@@ -16,8 +35,12 @@ export default function ResetPasswordPage() {
     if (error) {
       alert(error.message);
     } else {
-      alert("Password updated successfully ✅");
-      window.location.href = "/login";
+      fireConfetti(); // 🎉
+
+      // ✅ redirect to home (login modal varadhu)
+      setTimeout(() => {
+        router.push("/");
+      }, 1000);
     }
   };
 
@@ -37,6 +60,13 @@ export default function ResetPasswordPage() {
           onChange={(e) => setPassword(e.target.value)}
         />
 
+        <input
+          type="password"
+          placeholder="Confirm Password"
+          className="w-full border p-3 mb-4"
+          onChange={(e) => setConfirmPassword(e.target.value)}
+        />
+
         <button
           onClick={handleReset}
           className="w-full bg-green-600 text-white py-3"
@@ -49,3 +79,6 @@ export default function ResetPasswordPage() {
     </div>
   );
 }
+
+
+// reset-password 
