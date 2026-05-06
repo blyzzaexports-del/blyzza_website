@@ -104,7 +104,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
     const { error } = await supabase.auth.resetPasswordForEmail(
       resetData.email,
       {
-        redirectTo: "http://localhost:3000/reset-password",
+        redirectTo: `${window.location.origin}/reset-password`,
       }
     );
 
@@ -112,7 +112,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
       setToast({ message: error.message, type: "error" });
     } else {
       setToast({
-        message: "Reset link sent to your email 📩",
+        message: "Reset link sent 📩 Check your email",
         type: "success",
       });
       setShowReset(false);

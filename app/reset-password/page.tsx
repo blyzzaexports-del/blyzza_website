@@ -1,16 +1,33 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import supabase from "@/lib/supabase";
 import { useRouter } from "next/navigation";
 import confetti from "canvas-confetti";
 
-export default function ResetPasswordPage() {
-
+export default function Page() {
   const router = useRouter();
 
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [validSession, setValidSession] = useState(false);
+
+  // ✅ Check session (VERY IMPORTANT)
+  useEffect(() => {
+    const checkSession = async () => {
+      const { data } = await supabase.auth.getSession();
+
+      if (data.session) {
+        setValidSession(true);
+      } else {
+        alert("Invalid or expired reset link ❌");
+        router.push("/");
+      }
+    };
+
+    checkSession();
+  }, [router]);
 
   const fireConfetti = () => {
     confetti({
@@ -21,34 +38,52 @@ export default function ResetPasswordPage() {
   };
 
   const handleReset = async () => {
+    if (!password || !confirmPassword) {
+      alert("Fill all fields ❌");
+      return;
+    }
 
-    // ✅ check match
     if (password !== confirmPassword) {
       alert("Passwords do not match ❌");
       return;
     }
 
+    if (password.length < 6) {
+      alert("Password must be at least 6 characters ⚠️");
+      return;
+    }
+
+    setLoading(true);
+
     const { error } = await supabase.auth.updateUser({
       password,
     });
 
+    setLoading(false);
+
     if (error) {
       alert(error.message);
     } else {
-      fireConfetti(); // 🎉
+      fireConfetti();
 
-      // ✅ redirect to home (login modal varadhu)
       setTimeout(() => {
         router.push("/");
-      }, 1000);
+      }, 1500);
     }
   };
 
+  // ⛔ session check ஆகும் வரை render பண்ணாதே
+  if (!validSession) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p>Checking reset link...</p>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen flex items-center justify-center">
-
       <div className="w-[500px]">
-
         <h1 className="text-2xl text-center mb-6">
           Reset Password
         </h1>
@@ -69,16 +104,12 @@ export default function ResetPasswordPage() {
 
         <button
           onClick={handleReset}
-          className="w-full bg-green-600 text-white py-3"
+          disabled={loading}
+          className="w-full bg-green-600 text-white py-3 disabled:bg-gray-400"
         >
-          Update Password
+          {loading ? "Updating..." : "Update Password"}
         </button>
-
       </div>
-
     </div>
   );
 }
-
-
-// reset-password 
