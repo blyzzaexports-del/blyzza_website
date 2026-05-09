@@ -32,10 +32,11 @@ export function Navbar({
   const [isAuthOpen, setIsAuthOpen] =
     useState(false);
 
+  // ✅ USER
   const [user, setUser] =
     useState<any>(null);
 
-  // ✅ LOGOUT POPUP STATE
+  // ✅ LOGOUT POPUP
   const [showLogoutConfirm, setShowLogoutConfirm] =
     useState(false);
 
@@ -62,22 +63,23 @@ export function Navbar({
   /* 🔥 USER SESSION */
   useEffect(() => {
 
-    const getUser = async () => {
-
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-
-      setUser(user);
-
-    };
-
-    getUser();
+    // ❌ DON'T USE getUser()
+    // Because old session restore aagum
 
     const { data: listener } =
       supabase.auth.onAuthStateChange(
         (_event, session) => {
-          setUser(session?.user || null);
+
+          // ✅ ONLY AFTER LOGIN
+          if (_event === "SIGNED_IN") {
+            setUser(session?.user || null);
+          }
+
+          // ✅ AFTER LOGOUT
+          if (_event === "SIGNED_OUT") {
+            setUser(null);
+          }
+
         }
       );
 
@@ -114,6 +116,7 @@ export function Navbar({
             href="#home"
             className="flex items-center"
           >
+
             <Image
               src="/about/logo.png"
               alt="Blyzza Logo"
@@ -121,6 +124,7 @@ export function Navbar({
               height={50}
               className="object-contain"
             />
+
           </Link>
 
           {/* DESKTOP NAV */}
@@ -164,7 +168,9 @@ export function Navbar({
                 }
                 className="p-2 hover:bg-gray-200 rounded-full"
               >
+
                 <User className="w-6 h-6 text-black" />
+
               </button>
 
             )}
@@ -244,7 +250,6 @@ export function Navbar({
       </div>
 
       {/* 🔥 LOGOUT CONFIRM POPUP */}
-
       {showLogoutConfirm && (
 
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-[100]">
@@ -261,7 +266,7 @@ export function Navbar({
 
             <div className="flex justify-end gap-3">
 
-              {/* EXIT */}
+              {/* NO */}
               <button
                 onClick={() =>
                   setShowLogoutConfirm(false)
@@ -271,7 +276,7 @@ export function Navbar({
                 No
               </button>
 
-              {/* SURE */}
+              {/* YES */}
               <button
                 onClick={async () => {
 
@@ -283,6 +288,9 @@ export function Navbar({
                   document.cookie =
                     "role=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
 
+                  setShowLogoutConfirm(false);
+
+                  // ✅ REFRESH PAGE
                   window.location.reload();
 
                 }}
