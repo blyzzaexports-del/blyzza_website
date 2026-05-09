@@ -4,11 +4,8 @@ export const products: Product[] = [
   {
   id: 1,
   name: "Aloe Vera Gel",
-
   sizes: ["100gm"],
   prices: [199],
-
-  // ⚠️ IMPORTANT (image ➜ images)
   image: [
     "/about/aloe1.jpg",
     "/about/aloe2.jpg",
@@ -18,27 +15,145 @@ export const products: Product[] = [
     "/about/aloe6.jpg",
     "/about/aloe7.jpg",
   ],
-
   category: "skincare",
-
   // ✅ DESCRIPTION 🔥
   description: `Experience the refreshing care of BLYZZA Aloe Vera Gel, made with naturally derived aloe vera known for its soothing and hydrating properties. This lightweight, non-sticky gel helps moisturize the skin, leaving it soft, smooth, and refreshed. It can be used daily to calm dry or irritated skin and provide a natural glow. Suitable for both skin and hair care, this versatile gel absorbs quickly without clogging pores, making it ideal for all skin types.`,
-
   // ✅ BENEFITS 🔥
   benefits: `• Deeply hydrates and nourishes the skin  
 • Soothes irritation and redness  
 • Helps maintain soft and smooth skin  
 • Lightweight, non-greasy formula  
 • Suitable for all skin types`,
-
   // ✅ HOW TO USE 🔥
   howToUse: `Take a small amount of aloe vera gel and apply evenly on clean skin or scalp. Gently massage until fully absorbed. It can be used as a daily moisturizer, soothing gel, or hair conditioner. Use regularly for best results.`,
-
   // ✅ INGREDIENTS 🔥
   ingredients: `Aloe Vera Extract, Coconut Oil, Shea Butter, Castor Oil, Olive Oil, Glycerin, Vitamin E, Natural Essential Oils, Herbal Base`,
 },
   {
-    id: 2,
+  id: 2,
+  name: "Aloe Vera Gel Combo",
+  sizes: ["100gm"],
+  prices: [599],
+  comboIncludes: [
+    "Aloe Vera Gel - 100gm",
+    "Hibiscus Powder - 10g",
+    "Chamomile Powder - 10g",
+    "Butterfly Pea Powder - 10g",
+  ],
+  image: [
+    "/about/aloecombo1.jpg",
+    // "/about/aloecombo2.jpg",
+    "/about/aloecombo3.jpg",
+    // "/about/aloecombo4.jpg",
+    // "/about/aloecombo5.jpg",
+    "/about/aloecombo6.jpg",
+    // "/about/aloecombo7.jpg",
+    // "/about/aloecombo8.jpg",
+    "/about/aloecombo9.jpg",
+  ],
+  category: "skincare",
+  // ✅ DESCRIPTION 🔥
+  description: `✨ BLYZZA Herbal Beauty & Wellness Powders ✨
+
+Nature’s goodness for your skin, hair & inner wellness 🌿
+
+Our premium herbal powders are crafted from carefully selected natural ingredients to support both beauty care and healthy tea infusions.
+
+🌺 Hibiscus Powder
+Known for its antioxidant-rich properties that may support glowing skin, healthy hair & refreshing herbal tea experiences.
+
+🌼 Chamomile Powder
+Traditionally loved for its calming and soothing properties. Perfect for relaxing skincare rituals and comforting tea infusions.
+
+🦋 Butterfly Pea Powder
+Rich in natural antioxidants and vibrant botanical nutrients that may support radiant skin, hair wellness & colorful herbal drinks.
+
+💚 MULTIPURPOSE USES 💚
+✔ Face Packs
+✔ Hair Care
+✔ DIY Skincare
+✔ Herbal Tea Infusions
+✔ Wellness Drinks
+
+🌿 INGREDIENTS
+• Hibiscus Powder
+• Chamomile Powder
+• Butterfly Pea Powder
+• Aloe Vera Gel (for skincare application)
+
+☕ ALSO PERFECT FOR TEA INFUSIONS
+Mix 1 teaspoon of the herbal powder in hot water and enjoy a refreshing natural wellness drink.`,
+  // ✅ BENEFITS 🔥
+  benefits: `🌺 Hibiscus Powder – Benefits
+✔ Rich in Antioxidants
+✔ May Support Healthy Glowing Skin
+✔ Helps Refresh & Nourish Skin
+✔ May Support Hair Strength & Shine
+✔ Supports Relaxation as Herbal Tea
+✔ Suitable for DIY Face Packs & Tea Infusions
+
+🌼 Chamomile Powder – Benefits
+✔ Known for Calming Properties
+✔ Helps Soothe & Refresh Skin
+✔ May Support Relaxation & Better Sleep
+✔ Gentle on Skin for Face Packs
+✔ Perfect for Herbal Tea Infusions
+✔ Supports Natural Self-Care Rituals
+
+🦋 Butterfly Pea Powder – Benefits
+✔ Rich in Natural Antioxidants
+✔ May Support Healthy Skin & Hair
+✔ Traditionally Used for Wellness Drinks
+✔ Helps Revitalize & Refresh Skin
+✔ Great for Herbal Tea Infusions
+✔ Adds Natural Vibrant Color to Recipes & Drinks
+
+💚 Aloe Vera Gel – Benefits
+✔ Deeply Hydrates Skin
+✔ Helps Soothe Dryness & Irritation
+✔ Supports Soft & Smooth Skin
+✔ Perfect for DIY Face Packs
+✔ Lightweight & Refreshing Feel
+✔ Multipurpose Daily Skincare Essential
+
+✨ Nature Powered Wellness & Beauty by Blyzza ✨
+`,
+  // ✅ HOW TO USE 🔥
+  howToUse: `✨ HOW TO USE AS FACE PACK ✨
+1️⃣ Take 2 tablespoons of herbal powder
+2️⃣ Add Aloe Vera Gel and mix well to form a smooth paste
+3️⃣ Apply evenly on face & neck (avoid eye area)
+4️⃣ Leave for 15–20 minutes
+5️⃣ Use 2–3 times a week for best results`,
+  // ✅ INGREDIENTS 🔥
+  ingredients: `🌿 INGREDIENTS 🌿
+
+🌺 Hibiscus Powder
+Made from carefully dried premium Hibiscus flowers.
+
+🌼 Chamomile Powder
+Prepared using natural Chamomile flowers.
+
+🦋 Butterfly Pea Powder
+Crafted from finely ground Butterfly Pea flowers.
+
+💚 Aloe Vera Gel
+Made with pure Aloe Vera extract for hydration & soothing care.
+
+✨ 100% Herbal • Natural • Multipurpose ✨
+
+Suitable for:
+✔ DIY Face Packs
+✔ Hair Care
+✔ Herbal Tea Infusions
+✔ Wellness Drinks
+✔ Natural Skincare Rituals
+
+“No Artificial Colors • No Harsh Chemicals • Nature Inspired Care” 🌿
+`,
+},
+  {
+    id: 3,
     name: "Hibiscus Powder",
     sizes: ["50gm", "100gm", "200gm"],
     prices: [99, 149, 199],
@@ -61,7 +176,7 @@ export const products: Product[] = [
     ingredients: "100% Natural Hibiscus Flower Powder",
     },
   {
-    id: 3,
+    id: 4,
     name: "Chamomile Powder",
 
     sizes: ["50gm", "100gm", "200gm"],
@@ -96,7 +211,7 @@ export const products: Product[] = [
     ingredients: `100% Natural Chamomile Flower Powder`,
   },
   {
-  id: 4,
+  id: 5,
   name: "Butterfly Pea Powder",
 
   sizes: ["50gm", "100gm", "200gm"],
@@ -132,7 +247,7 @@ export const products: Product[] = [
   ingredients: `100% Natural Butterfly Pea Flower Powder`,
 },
   {
-  id: 5,
+  id: 6,
   name: "Moringa Powder",
 
   sizes: ["50gm", "100gm", "200gm"],
@@ -165,7 +280,7 @@ export const products: Product[] = [
   ingredients: `100% Natural Moringa Leaf Powder`,
 },
   {
-  id: 6,
+  id: 7,
   name: "Senna Leaves",
 
   sizes: ["100gm", "200gm"],
@@ -200,7 +315,7 @@ export const products: Product[] = [
   ingredients: `100% Natural Senna Leaves Powder`,
 },
   {
-  id: 7,
+  id:8 ,
   name: "Goat Milk White Soap",
 
   sizes: ["100gm"],
@@ -236,7 +351,7 @@ export const products: Product[] = [
   ingredients: `Goat Milk, Natural Oils, Herbal Base`,
 },
 {
-  id: 8,
+  id: 9,
   name: "Neem Soap",
 
   sizes: ["100gm"],
@@ -272,7 +387,7 @@ export const products: Product[] = [
   ingredients: `Goat Milk, Natural Oils, Herbal Base`,
 },
   {
-  id: 9,
+  id: 10,
   name: "Nettle Soap(Kuppaimeni)",
 
   sizes: ["100gm"],
@@ -308,7 +423,7 @@ export const products: Product[] = [
   ingredients: `Nettle Extract, Natural Oils, Herbal Base`,
 },
   {
-  id: 10,
+  id: 11,
   name: "Manjistha & Coconut Soap",
 
   sizes: ["100gm"],
@@ -344,7 +459,7 @@ export const products: Product[] = [
   ingredients: `Manjistha Extract, Coconut Oil, Natural Oils, Herbal Base`,
 },
   {
-  id: 11,
+  id: 12,
   name: "Red Clay Soap",
 
   sizes: ["100gm"],
@@ -380,7 +495,7 @@ export const products: Product[] = [
   ingredients: `Red Clay, Coconut Oil, Natural Oils, Herbal Base`,
 },
   {
-  id: 12,
+  id: 13,
   name: "Shea Butter",
 
   sizes: ["100gm", "200gm", "500gm"],

@@ -23,32 +23,53 @@ export function Navbar({
   onCartClick,
 }: NavbarProps) {
 
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isAuthOpen, setIsAuthOpen] = useState(false);
-  const [user, setUser] = useState<any>(null);
+  const [isScrolled, setIsScrolled] =
+    useState(false);
+
+  const [isMobileMenuOpen, setIsMobileMenuOpen] =
+    useState(false);
+
+  const [isAuthOpen, setIsAuthOpen] =
+    useState(false);
+
+  const [user, setUser] =
+    useState<any>(null);
+
+  // ✅ LOGOUT POPUP STATE
+  const [showLogoutConfirm, setShowLogoutConfirm] =
+    useState(false);
 
   /* 🔥 SCROLL EFFECT */
   useEffect(() => {
+
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
     };
 
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener(
+      "scroll",
+      handleScroll
+    );
 
     return () =>
-      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener(
+        "scroll",
+        handleScroll
+      );
+
   }, []);
 
   /* 🔥 USER SESSION */
   useEffect(() => {
 
     const getUser = async () => {
+
       const {
         data: { user },
       } = await supabase.auth.getUser();
 
       setUser(user);
+
     };
 
     getUser();
@@ -83,12 +104,16 @@ export function Navbar({
           : "bg-transparent py-5"
       }`}
     >
+
       <div className="container mx-auto px-4 md:px-6">
 
         <div className="flex items-center justify-between">
 
           {/* LOGO */}
-          <Link href="#home" className="flex items-center">
+          <Link
+            href="#home"
+            className="flex items-center"
+          >
             <Image
               src="/about/logo.png"
               alt="Blyzza Logo"
@@ -102,6 +127,7 @@ export function Navbar({
           <div className="hidden md:flex items-center gap-8">
 
             {navLinks.map((link) => (
+
               <Link
                 key={link.href}
                 href={link.href}
@@ -109,44 +135,58 @@ export function Navbar({
               >
                 {link.label}
               </Link>
-            ))}
 
-            {/* ✅ Only show if logged in */}
-            {/* {user && (
-              <Link
-                href="/my-orders"
-                className="text-sm font-medium hover:text-primary"
-              >
-                My Orders
-              </Link>
-            )} */}
+            ))}
 
           </div>
 
           {/* RIGHT SIDE */}
           <div className="flex items-center gap-3">
 
-            {/* ✅ ALWAYS LOGIN ICON */}
-            <button
-              onClick={() => setIsAuthOpen(true)}
-              className="p-2 hover:bg-gray-200 rounded-full"
-            >
-              <User className="w-6 h-6 text-black" />
-            </button>
+            {/* 👤 LOGIN / LOGOUT */}
+
+            {user ? (
+
+              <button
+                onClick={() =>
+                  setShowLogoutConfirm(true)
+                }
+                className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition"
+              >
+                Logout
+              </button>
+
+            ) : (
+
+              <button
+                onClick={() =>
+                  setIsAuthOpen(true)
+                }
+                className="p-2 hover:bg-gray-200 rounded-full"
+              >
+                <User className="w-6 h-6 text-black" />
+              </button>
+
+            )}
 
             {/* 🛒 CART */}
             <button
               onClick={() => {
-                window.dispatchEvent(new Event("open-cart"));
+                window.dispatchEvent(
+                  new Event("open-cart")
+                );
               }}
               className="relative p-2 hover:bg-gray-200 rounded-full"
             >
+
               <ShoppingBag className="w-6 h-6 text-black" />
 
               {cartCount > 0 && (
+
                 <span className="absolute -top-1 -right-1 w-5 h-5 bg-primary text-white text-xs rounded-full flex items-center justify-center">
                   {cartCount}
                 </span>
+
               )}
 
             </button>
@@ -154,15 +194,19 @@ export function Navbar({
             {/* 📱 MOBILE MENU */}
             <button
               onClick={() =>
-                setIsMobileMenuOpen(!isMobileMenuOpen)
+                setIsMobileMenuOpen(
+                  !isMobileMenuOpen
+                )
               }
               className="md:hidden p-2"
             >
+
               {isMobileMenuOpen ? (
                 <X className="w-5 h-5" />
               ) : (
                 <Menu className="w-5 h-5" />
               )}
+
             </button>
 
           </div>
@@ -171,10 +215,13 @@ export function Navbar({
 
         {/* MOBILE NAV */}
         {isMobileMenuOpen && (
+
           <div className="md:hidden mt-4 pb-4">
+
             <div className="flex flex-col gap-3">
 
               {navLinks.map((link) => (
+
                 <Link
                   key={link.href}
                   href={link.href}
@@ -185,26 +232,72 @@ export function Navbar({
                 >
                   {link.label}
                 </Link>
+
               ))}
 
-              {/* ✅ Only for logged in */}
-              {/* {user && (
-                <Link
-                  href="/my-orders"
-                  className="py-2"
-                  onClick={() =>
-                    setIsMobileMenuOpen(false)
-                  }
-                >
-                  My Orders
-                </Link>
-              )} */}
-
             </div>
+
           </div>
+
         )}
 
       </div>
+
+      {/* 🔥 LOGOUT CONFIRM POPUP */}
+
+      {showLogoutConfirm && (
+
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-[100]">
+
+          <div className="bg-white p-6 rounded-2xl shadow-xl w-[320px]">
+
+            <h2 className="text-xl font-semibold mb-3">
+              Logout?
+            </h2>
+
+            <p className="text-gray-600 mb-6">
+              Do you want to logout?
+            </p>
+
+            <div className="flex justify-end gap-3">
+
+              {/* EXIT */}
+              <button
+                onClick={() =>
+                  setShowLogoutConfirm(false)
+                }
+                className="px-4 py-2 rounded-lg border"
+              >
+                No
+              </button>
+
+              {/* SURE */}
+              <button
+                onClick={async () => {
+
+                  await supabase.auth.signOut();
+
+                  localStorage.removeItem("role");
+                  localStorage.removeItem("userFirstName");
+
+                  document.cookie =
+                    "role=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+
+                  window.location.reload();
+
+                }}
+                className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition"
+              >
+                Sure
+              </button>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      )}
 
       {/* AUTH MODAL */}
       <AuthModal
@@ -215,6 +308,6 @@ export function Navbar({
       />
 
     </nav>
+
   );
 }
-
