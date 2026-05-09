@@ -31,7 +31,7 @@ export const products: Product[] = [
 },
   {
   id: 2,
-  name: "Aloe Vera Gel Combo",
+  name: "Organic Beauty Kit",
   sizes: ["100gm"],
   prices: [599],
   comboIncludes: [
