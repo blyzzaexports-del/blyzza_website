@@ -14,10 +14,6 @@ export default function ClientProviders({
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
 
   const [isLoaded, setIsLoaded] = useState(false);
-  const [showRestriction, setShowRestriction] = useState(false);
-
-  // 🔥 TEST MODE (LOCAL TEST)
-  const isTestMode = false; // 👉 true pannina banner force ah varum
 
   /* 🛒 ADD TO CART */
   const handleAddToCart = useCallback(
@@ -67,10 +63,15 @@ export default function ClientProviders({
               item.sizeIndex === sizeIndex
             ) {
               const newQuantity = item.quantity + delta;
+
               return newQuantity > 0
-                ? { ...item, quantity: newQuantity }
+                ? {
+                    ...item,
+                    quantity: newQuantity,
+                  }
                 : item;
             }
+
             return item;
           })
           .filter((item) => item.quantity > 0)
@@ -123,7 +124,7 @@ export default function ClientProviders({
     };
   }, [handleAddToCart]);
 
-  /* 🧠 LOAD CART (ONLY ONCE) */
+  /* 🧠 LOAD CART */
   useEffect(() => {
     try {
       const savedCart = localStorage.getItem("cart");
@@ -149,33 +150,6 @@ export default function ClientProviders({
     }
   }, [cartItems, isLoaded]);
 
-  /* 🌍 COUNTRY CHECK (SAFE + TEST MODE) */
-  useEffect(() => {
-    const checkCountry = async () => {
-      // 🔥 TEST MODE
-      if (isTestMode) {
-        setShowRestriction(true);
-        return;
-      }
-
-      try {
-        const res = await fetch("https://ipapi.co/json/");
-        const data = await res.json();
-
-        if (data?.country_code !== "IN") {
-          setShowRestriction(true);
-        }
-      } catch (err) {
-        console.error("Location check failed", err);
-
-        // ✅ fallback (allow access)
-        setShowRestriction(false);
-      }
-    };
-
-    checkCountry();
-  }, []);
-
   /* 💰 TOTAL */
   const total = cartItems.reduce(
     (sum, item) =>
@@ -185,13 +159,6 @@ export default function ClientProviders({
 
   return (
     <>
-      {/* 🌍 TOP BANNER */}
-      {showRestriction && (
-        <div className="bg-red-500 text-white text-center py-2 text-sm">
-          🚫 This service is currently available only in India 🇮🇳
-        </div>
-      )}
-
       {children}
 
       {/* 🛒 CART */}
