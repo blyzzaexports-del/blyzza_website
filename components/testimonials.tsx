@@ -101,7 +101,6 @@ export function Testimonials() {
                 >
                   <source src={current.video} type="video/mp4" />
                 </video>
-
               </div>
             </div>
           )}

@@ -496,6 +496,239 @@ Suitable for:
 },
   {
   id: 13,
+  name: "Pappaya Soap",
+
+  sizes: ["100gm"],
+  prices: [229],
+
+  // ✅ FIXED
+  image: [
+    "/about/pappaya.jpg",
+  ],
+
+  category: "soaps",
+
+  // ✅ DESCRIPTION 🔥
+  description: `Experience the goodness of papaya with BLYZZA Papaya Soap, a handmade luxury bathing bar crafted to bring freshness and a naturally nourished feel to your daily skincare routine. Enriched with the goodness of papaya-inspired ingredients and skin-loving botanicals, this soap gently cleanses while leaving your skin feeling soft, refreshed, and pampered.
+                The natural essence of papaya helps create a fresh and radiant skincare experience, while the handmade formulation provides a smooth and luxurious bathing feel. Designed for everyday self-care, BLYZZA Papaya Soap blends traditional handmade craftsmanship with a premium skincare experience..`,
+
+  // ✅ BENEFITS 🔥
+  benefits: `🍃 Natural Freshness & Clean Feel 
+• ✨ Helps Maintain Soft & Smooth Skin
+• 🌿 Nourishing Handmade Care
+• 🍊 Papaya Extract Inspired Glow Care
+• 🛁 Luxury Spa-Like Bath Experience`,
+
+  // ✅ HOW TO USE 🔥
+  howToUse: `Wet your skin with water and gently apply BLYZZA Papaya Soap to create a rich lather.
+            Massage the lather softly over your body in circular motions.
+            Leave it for a few moments to enjoy the refreshing papaya bathing experience.
+            Rinse thoroughly with clean water.
+            After use, keep the soap in a dry place to maintain its quality and freshness.
+
+            For best results: Use daily as part of your regular bathing routine. ✨`,
+
+  // ✅ INGREDIENTS 🔥
+  ingredients: `Papaya Extract, Coconut Oil, Natural Oils, Herbal Base`,
+},
+  {
+  id: 14,
+  name: "Nochi Soap",
+
+  sizes: ["100gm"],
+  prices: [229],
+
+  // ✅ FIXED
+  image: [
+    "/about/nochi.jpg",
+  ],
+
+  category: "soaps",
+
+  // ✅ DESCRIPTION 🔥
+  description: `Experience the power of traditional herbal skincare with our handmade Nochi soap, carefully crafted using Five-Leaved Chaste Tree (Nochi) leaves, nourishing oils, and natural ingredients.
+                Nochi (Vitex negundo) has been used in Ayurveda for centuries due to its cleansing and soothing properties. This handmade herbal soap gently cleanses the skin while helping maintain freshness and promoting a healthy-looking complexion.`,
+
+  // ✅ BENEFITS 🔥
+  benefits: `🌿 Gently cleanses the skin
+• 🌿 Helps remove dirt and excess oil
+• 🌿 Supports healthy-looking skin
+• 🌿 Refreshes and rejuvenates skin
+• 🌿 Herbal and natural formulation
+• 🌿 Provides a soothing bathing experience
+• 🌿 Suitable for everyday use
+• 🌿 Traditional Ayurvedic herbal care`,
+
+  // ✅ HOW TO USE 🔥
+  howToUse: ` •  Wet your skin with clean water before use.
+              • Gently apply BLYZZA Nochi Soap on your body to create a smooth lather.
+              • Massage the lather gently over the skin for a refreshing bathing experience.
+              • Rinse thoroughly with water after cleansing.
+              • Keep the soap in a dry place after use to maintain its quality and freshness.`,
+
+  // ✅ INGREDIENTS 🔥
+  ingredients: `• Nochi Leaves (Five-Leaved Chaste Tree / Vitex Negundo)
+                • Coconut Oil
+                • Castor Oil
+                • Olive Oil
+                • Sodium Hydroxide (used for soap making)
+                • Distilled Water
+                • Herbal Extracts
+                • Natural Plant Powders`,
+},
+{
+  id: 15,
+  name: "Potato&Charcoal  Soap",
+
+  sizes: ["100gm"],
+  prices: [229],
+
+  // ✅ FIXED
+  image: [
+    "/about/PotatoCharcoal.jpg",
+  ],
+
+  category: "soaps",
+
+  // ✅ DESCRIPTION 🔥
+  description: `BLYZZA Handmade Potato Charcoal Soap is carefully handcrafted using premium ingredients to provide a gentle yet effective cleansing experience. Activated charcoal helps draw out dirt and excess oil from the skin, while potato extract is traditionally valued in skincare for its nourishing and refreshing properties.
+                This handmade soap creates a rich creamy lather that leaves your skin feeling clean, smooth, and refreshed without excessive dryness. Suitable for both men and women and ideal for daily face and body cleansing.`,
+
+  // ✅ BENEFITS 🔥
+  benefits: `   • 🖤 Deep Cleansing Care
+                  Activated charcoal helps cleanse the skin by removing dirt, excess oil, and daily impurities for a fresh feel.
+                •✨ Helps Maintain Clear & Fresh Looking Skin
+                 Provides a clean and refreshed bathing experience with a premium skincare feel.
+                •🥔 Potato-Inspired Skin Nourishment
+                 Potato extract-inspired care helps support a soft, smooth and healthy-looking skin appearance.
+                •🌿 Oil Balance Support
+                 Helps maintain a balanced skin feel by gently cleansing without making the skin feel heavy.
+                •🛁 Premium Detox Bath Experience
+                 Combines charcoal cleansing and natural-inspired ingredients for a luxurious everyday bathing routine.`,
+
+  // ✅ HOW TO USE 🔥
+  howToUse: ` • Wet your skin with clean water before applying the soap.
+              • Gently rub BLYZZA Potato & Charcoal Soap on your body to create a smooth lather.
+              • Massage the lather softly over the skin and enjoy the refreshing cleansing experience.
+              • Rinse thoroughly with clean water.
+              • After use, place the soap in a dry area to maintain its quality and freshness.`,
+
+  // ✅ INGREDIENTS 🔥
+  ingredients: `  • Activated Charcoal
+                  • Potato Extract
+                  •   Coconut Oil
+                  •   Olive Oil
+                  •   Castor Oil
+                  • Shea Butter
+                  •   Aloe Vera Extract
+                  •   Glycerin
+                  •   Natural Fragrance
+                  •   Botanical Extracts
+                  •   Vegetable Based Soap Base`,
+},
+{
+  id: 16,
+  name: " Aavarampoo Soap",
+
+  sizes: ["100gm"],
+  prices: [229],
+
+  // ✅ FIXED
+  image: [
+    "/about/Aavarampoo.jpg",
+  ],
+
+  category: "soaps",
+
+  // ✅ DESCRIPTION 🔥
+  description: `Experience the traditional beauty secrets of South India with our Handmade Aavarampoo Soap, carefully crafted using Aavarampoo (Senna Auriculata / Tanner's Cassia), a treasured Ayurvedic herb known for its skin-loving properties.
+                his luxurious herbal bath bar gently cleanses the skin while helping to maintain a fresh, radiant, and healthy-looking complexion. Rich in natural botanicals, this soap is handcrafted in small batches to preserve its purity and effectiveness.`,
+
+  // ✅ BENEFITS 🔥
+  benefits: `•🌼 Natural Freshness & Cleansing
+              Aavarampoo-inspired ingredients help provide a refreshing bathing experience and leave skin feeling clean and fresh.
+              •✨ Helps Maintain Soft & Smooth Skin
+              Gentle cleansing helps keep the skin feeling soft, smooth, and comfortable.
+              •🍃 Traditional Herbal Care
+              Inspired by traditional herbal skincare, offering a natural and soothing bathing ritual.
+              •🌿 Refreshing Fragrance Experience
+              Provides a pleasant herbal aroma that enhances your everyday bath routine.
+              •🛁 Premium Handmade Bathing Experience
+              Crafted to give a luxurious self-care feel with natural-inspired ingredients and a rich bathing experience.`,
+
+  // ✅ HOW TO USE 🔥
+  howToUse: ` • Wet your skin with clean water before using the soap.
+              • Gently apply BLYZZA Aavarampoo Soap on your body and create a rich lather.
+              • Massage the lather softly over the skin for a refreshing herbal bathing experience.
+              • Rinse thoroughly with clean water.
+              • After use, keep the soap in a dry place to maintain its freshness and quality.`,
+
+  // ✅ INGREDIENTS 🔥
+  ingredients: ` • Aavarampoo (Cassia Auriculata) Extract
+                • Coconut Oil
+                • Olive Oil
+                • Castor Oil
+                • Shea Butter
+                • Aloe Vera Extract
+                • Glycerin
+                • Natural Fragrance
+                • Botanical Extracts
+                • Vegetable Based Soap Base`,
+},
+{
+  id: 17,
+  name: "NalanguMaavu Soap",
+
+  sizes: ["100gm"],
+  prices: [229],
+
+  // ✅ FIXED
+  image: [
+    "/about/NalanguMaavu.jpg",
+  ],
+
+  category: "soaps",
+
+  // ✅ DESCRIPTION 🔥
+  description: `Experience the goodness of traditional herbal skincare with BLYZZA Nalangu Maavu Soap. Inspired by the ancient beauty ritual of Nalangu Maavu, this handmade bathing bar combines natural herbal ingredients to provide a refreshing and nourishing bathing experience.
+                Crafted with a blend of traditional botanicals, BLYZZA Nalangu Maavu Soap gently cleanses the skin while leaving it feeling soft, fresh, and naturally cared for. Its herbal essence brings a premium spa-like feel to your daily bathing routine.
+                Designed for those who love natural-inspired skincare, this soap blends traditional wellness with modern handmade craftsmanship for a luxurious bathing experience.`,
+
+  // ✅ BENEFITS 🔥
+  benefits: `   •🌿 Traditional Herbal Cleansing
+                  Inspired by the goodness of Nalangu Maavu, it provides a natural and refreshing cleansing experience.
+                • ✨ Helps Maintain Soft & Smooth Skin
+                  Gentle herbal care helps keep the skin feeling soft, smooth, and comfortable.
+                • 🍃 Natural Freshness Experience
+                  Herbal ingredients provide a refreshing feel and a pleasant bathing experience.
+                •🛁 Premium Handmade Bath Care
+                  Crafted to deliver a luxurious bathing ritual with traditional-inspired ingredients.
+                •🌸 Everyday Skin Care Support
+                  Suitable for regular bathing, helping you enjoy a clean and refreshed skin feel.`,
+
+  // ✅ HOW TO USE 🔥
+  howToUse: ` • Wet your skin with clean water before using the soap.
+              • Gently apply BLYZZA Nalangu Maavu Soap on your body and create a rich lather.
+              • Massage the lather softly over the skin for a refreshing herbal bathing experience.
+              • Rinse thoroughly with clean water.
+              • After use, keep the soap in a dry place to maintain its quality and freshness.`,
+
+  // ✅ INGREDIENTS 🔥
+  ingredients: `• Nalangu Maavu Herbal Blend
+                • Green Gram (Moong Dal) Extract
+                •   Turmeric Extract
+                •   Sandalwood Extract
+                •   Neem Extract
+                •   Aloe Vera Extract
+                •   Coconut Oil
+                •   Olive Oil
+                •   Castor Oil
+                •   Glycerin
+                •   Natural Fragrance
+                •   Vegetable Based Soap Base`,
+},
+  {
+  id: 18,
   name: "Shea Butter",
 
   sizes: ["100gm", "200gm", "500gm"],
