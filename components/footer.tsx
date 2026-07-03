@@ -10,17 +10,26 @@ export function Footer() {
       <div className="container mx-auto px-4 md:px-6">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 lg:gap-12 mb-12">
           {/* Brand */}
-          <div className="col-span-2 md:col-span-1">
-            <Link href="#home" className="inline-block mb-4">
-              <span className="font-serif text-2xl font-bold text-primary-foreground">
-                Blyzza
-              </span>
-            </Link>
-            <p className="text-primary-foreground/70 text-sm leading-relaxed">
-              Pure herbal skincare products for healthy skin & hair. Embrace
-              natural beauty.
-            </p>
-          </div>
+          {/* Brand */}
+        <div className="col-span-2 md:col-span-1">
+          <Link href="#home" className="inline-block mb-4">
+            <span className="font-serif text-2xl font-bold text-primary-foreground">
+              Blyzza
+            </span>
+          </Link>
+
+          <p className="text-primary-foreground/70 text-sm leading-relaxed">
+            Pure herbal skincare products for healthy skin & hair. Embrace natural
+            beauty.
+          </p>
+
+          <p className="mt-4 text-xs text-primary-foreground/60">
+            <span className="font-medium">Brand:</span> Blyzza
+            <br />
+            <span className="font-medium">Owned & Operated by:</span> Zophion
+            Enterprises
+          </p>
+        </div>
 
           {/* Quick Links */}
           <div>
@@ -114,8 +123,12 @@ export function Footer() {
 
         {/* Bottom */}
         <div className="pt-8 border-t border-primary-foreground/10 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-primary-foreground/50 text-sm">
-            © 2025 Blyzza. All rights reserved.
+          <p className="text-primary-foreground/50 text-sm text-center md:text-left">
+            © {currentYear} Blyzza. All rights reserved.
+            <br />
+            <span className="text-xs">
+              Blyzza is a brand owned and operated by Zophion Enterprises.
+            </span>
           </p>
           <div className="flex gap-6">
             <Link
