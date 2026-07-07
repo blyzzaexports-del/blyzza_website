@@ -21,7 +21,9 @@ export async function GET(
     name: product.name,
     price: product.prices[0],
     image: `https://www.blyzza.com${product.image[0]}`,
-    images: product.image.map((img) => `https://www.blyzza.com${img}`),
+    images: product.image.map(
+      (img) => `https://www.blyzza.com${img}`
+    ),
     description: product.description,
     benefits: product.benefits,
     howToUse: product.howToUse,
