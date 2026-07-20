@@ -16,8 +16,6 @@ export interface Product {
   benefits?: string;
   howToUse?: string;
   ingredients?: string;
-
-  // ✅ NEW
   comboIncludes?: string[];
 }
 
@@ -30,42 +28,62 @@ export function ProductCard({
   product,
   featured = false,
 }: ProductCardProps) {
-
-  const [selectedSizeIndex, setSelectedSizeIndex] =
-    useState(0);
-
-  const [mounted, setMounted] =
-    useState(false);
-
-  // ✅ COMBO POPUP
-  const [showCombo, setShowCombo] =
-    useState(false);
+  const [selectedSizeIndex, setSelectedSizeIndex] = useState(0);
+  const [mounted, setMounted] = useState(false);
+  const [showCombo, setShowCombo] = useState(false);
+  const [currency, setCurrency] = useState({
+  code: "INR",
+  symbol: "₹",
+  rate: 1,
+});
 
   useEffect(() => {
     setMounted(true);
   }, []);
+  useEffect(() => {
+  const currencyMap: any = {
+    INR: { code: "INR", symbol: "₹", rate: 1 },
+    USD: { code: "USD", symbol: "$", rate: 0.012 },
+    GBP: { code: "GBP", symbol: "£", rate: 0.0088 },
+    AED: { code: "AED", symbol: "AED ", rate: 0.044 },
+    SGD: { code: "SGD", symbol: "S$", rate: 0.016 },
+    AUD: { code: "AUD", symbol: "A$", rate: 0.018 },
+  };
+
+  const saved = localStorage.getItem("currency");
+
+  if (saved && currencyMap[saved]) {
+    setCurrency(currencyMap[saved]);
+  }
+
+  const handleCurrency = (event: any) => {
+    setCurrency(event.detail);
+  };
+
+  window.addEventListener("currency-change", handleCurrency);
+
+  return () => {
+    window.removeEventListener("currency-change", handleCurrency);
+  };
+}, []);
 
   if (!mounted) return null;
 
   if (!product || !product.sizes || !product.prices) {
-    console.error(
-      "❌ Invalid product data:",
-      product
-    );
+    console.error("❌ Invalid product data:", product);
     return null;
   }
 
   const safeSizeIndex =
-    selectedSizeIndex < product.sizes.length
-      ? selectedSizeIndex
-      : 0;
+    selectedSizeIndex < product.sizes.length ? selectedSizeIndex : 0;
 
-  const price =
-    product.prices[safeSizeIndex];
+  const basePrice = product.prices[safeSizeIndex];
 
-  // ✅ ADD TO CART
+const price = (
+  basePrice * currency.rate
+).toFixed(2);
+
   const handleAdd = () => {
-
     window.dispatchEvent(
       new CustomEvent("add-to-cart", {
         detail: {
@@ -75,11 +93,9 @@ export function ProductCard({
         },
       })
     );
-
   };
 
   return (
-
     <>
       {/* PRODUCT CARD */}
       <div
@@ -87,10 +103,8 @@ export function ProductCard({
           featured ? "col-span-1" : ""
         }`}
       >
-
         {/* IMAGE */}
         <div className="relative aspect-square overflow-hidden bg-sage-light/30">
-
           <Image
             src={product.image?.[0] || "/fallback.jpg"}
             alt={product.name}
@@ -101,7 +115,6 @@ export function ProductCard({
 
           {/* HOVER */}
           <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center gap-3 opacity-0 group-hover:opacity-100 transition duration-300">
-
             {/* VIEW BENEFITS */}
             <Link
               href={`/product/${product.id}`}
@@ -110,18 +123,14 @@ export function ProductCard({
               View Benefits
             </Link>
 
-            {/* ✅ VIEW COMBO */}
+            {/* VIEW COMBO */}
             {product.comboIncludes && (
-
               <button
-                onClick={() =>
-                  setShowCombo(true)
-                }
+                onClick={() => setShowCombo(true)}
                 className="bg-green-600 text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-green-700 transition"
               >
                 View Combo
               </button>
-
             )}
 
             {/* ADD */}
@@ -129,20 +138,14 @@ export function ProductCard({
               onClick={handleAdd}
               className="bg-primary text-white px-4 py-2 rounded-full text-sm flex items-center gap-2"
             >
-
               <Plus className="w-4 h-4" />
-
               Add
-
             </button>
-
           </div>
-
         </div>
 
         {/* CONTENT */}
         <div className="p-5">
-
           {/* CATEGORY */}
           <span className="text-xs text-muted-foreground uppercase tracking-wider">
             {product.category}
@@ -155,94 +158,62 @@ export function ProductCard({
 
           {/* SIZES */}
           <div className="flex flex-wrap gap-2 mb-3">
-
-            {product.sizes.map(
-              (size, index) => (
-
-                <button
-                  key={size}
-                  onClick={() =>
-                    setSelectedSizeIndex(index)
-                  }
-                  className={`text-xs px-3 py-1 rounded-full border transition ${
-                    safeSizeIndex === index
-                      ? "bg-primary text-white"
-                      : "bg-muted text-muted-foreground"
-                  }`}
-                >
-                  {size}
-                </button>
-
-              )
-            )}
-
+            {product.sizes.map((size, index) => (
+              <button
+                key={size}
+                onClick={() => setSelectedSizeIndex(index)}
+                className={`text-xs px-3 py-1 rounded-full border transition ${
+                  safeSizeIndex === index
+                    ? "bg-primary text-white"
+                    : "bg-muted text-muted-foreground"
+                }`}
+              >
+                {size}
+              </button>
+            ))}
           </div>
 
           {/* PRICE + ADD */}
           <div className="flex items-center justify-between">
-
             <span className="text-primary font-semibold text-lg">
-              ₹{price}
+              {currency.symbol}{price}
             </span>
 
             <button
               onClick={handleAdd}
               className="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center hover:bg-primary hover:text-white transition"
             >
-
               <Plus className="w-5 h-5" />
-
             </button>
-
           </div>
-
         </div>
-
       </div>
 
-      {/* 🔥 COMBO MODAL */}
+      {/* COMBO MODAL */}
       {showCombo && (
-
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[999]">
-
           <div className="bg-white rounded-2xl p-6 w-[350px] shadow-2xl">
-
             <h2 className="text-2xl font-semibold mb-4 text-primary">
               Combo Includes
             </h2>
 
             <ul className="space-y-3 text-gray-700">
-
-              {product.comboIncludes?.map(
-                (item, index) => (
-                  <li
-                    key={index}
-                    className="flex items-center gap-2"
-                  >
-                    ✅ {item}
-                  </li>
-                )
-              )}
-
+              {product.comboIncludes?.map((item, index) => (
+                <li key={index} className="flex items-center gap-2">
+                  ✅ {item}
+                </li>
+              ))}
             </ul>
 
-            {/* CLOSE */}
             <button
-              onClick={() =>
-                setShowCombo(false)
-              }
+              onClick={() => setShowCombo(false)}
               className="mt-6 w-full bg-green-600 text-white py-3 rounded-xl hover:bg-green-700 transition"
             >
               Close
             </button>
-
           </div>
-
         </div>
-
       )}
-
     </>
-
   );
 }

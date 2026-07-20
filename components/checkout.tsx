@@ -23,8 +23,34 @@ export default function Checkout({
   total,
   items,
 }: CheckoutProps) {
-  const DELIVERY_CHARGE = total >= 50 ? 50 : 0;
-  const finalTotal = total + DELIVERY_CHARGE;
+  // Selected Currency
+const [selectedCurrency, setSelectedCurrency] = useState<any>({
+  country: "India",
+  code: "INR",
+  symbol: "₹",
+  rate: 1,
+});
+
+// Load selected currency
+useState(() => {
+  if (typeof window !== "undefined") {
+    const saved = localStorage.getItem("selectedCurrency");
+
+    if (saved) {
+      setSelectedCurrency(JSON.parse(saved));
+    }
+  }
+});
+
+// Delivery Charge
+const DELIVERY_CHARGE =
+  selectedCurrency.country === "India" ? 80 : 1500;
+
+// Currency Conversion
+const convert = (amount: number) =>
+  (amount / selectedCurrency.rate).toFixed(2);
+
+const finalTotal = total + DELIVERY_CHARGE;
 
   const [formData, setFormData] = useState({
     name: "",
@@ -368,15 +394,15 @@ export default function Checkout({
             />
 
             <div className="text-sm">
-              Subtotal: ₹{total}
+              Subtotal: {selectedCurrency.symbol}{convert(total)}
             </div>
 
             <div className="text-sm">
-              Delivery: ₹{DELIVERY_CHARGE}
+              Delivery: {selectedCurrency.symbol}{convert(DELIVERY_CHARGE)}
             </div>
 
             <div className="font-bold">
-              Total: ₹{finalTotal}
+              Total: {selectedCurrency.symbol}{convert(finalTotal)}
             </div>
 
             <button

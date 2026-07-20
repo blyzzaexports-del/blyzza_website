@@ -1,4 +1,3 @@
-
 import type { Metadata, Viewport } from "next";
 import { Playfair_Display, Poppins } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
@@ -20,16 +19,15 @@ const poppins = Poppins({
   display: "swap",
 });
 
-/* ✅ METADATA (SEO + FAVICON 🔥) */
+/* ✅ METADATA */
 export const metadata: Metadata = {
   title: "Blyzza | Premium Herbal Skincare",
-  description: "Natural skincare products",
+  description: "Natural skincare products made with traditional herbal care.",
 
-  // 🔥 ADD THIS FOR LOGO IN TOP BAR
   icons: {
-    icon: "/favicon.ico",       // main favicon
+    icon: "/favicon.ico",
     shortcut: "/favicon.ico",
-    apple: "/icon.png",         // for iPhone
+    apple: "/icon.png",
   },
 };
 
@@ -51,17 +49,17 @@ export default function RootLayout({
       lang="en"
       className={`${playfair.variable} ${poppins.variable}`}
     >
-      <body className="font-sans antialiased">
+      <body className="font-sans antialiased bg-white text-black">
 
-        {/* ✅ CLIENT SIDE PROVIDERS */}
+        {/* 🔥 GLOBAL PROVIDERS (COUNTRY + STORE + ETC) */}
         <ClientProviders>
           {children}
         </ClientProviders>
 
-        {/* ✅ ANALYTICS */}
+        {/* 📊 ANALYTICS */}
         <Analytics />
 
-        {/* ✅ RAZORPAY SCRIPT */}
+        {/* 💳 RAZORPAY SCRIPT */}
         <Script
           src="https://checkout.razorpay.com/v1/checkout.js"
           strategy="afterInteractive"
@@ -71,4 +69,3 @@ export default function RootLayout({
     </html>
   );
 }
-

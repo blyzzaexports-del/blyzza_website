@@ -1,5 +1,5 @@
 "use client";
-
+import { useEffect, useState } from "react";
 import { X, Plus, Minus, ShoppingBag } from "lucide-react";
 import Image from "next/image";
 import { Product } from "./product-card";
@@ -31,11 +31,64 @@ export function Cart({
   onRemoveItem,
   onCheckout,
 }: CartProps) {
-  const total = items.reduce(
-    (sum, item) =>
-      sum + item.product.prices[item.sizeIndex] * item.quantity,
-    0
+  const [currency, setCurrency] = useState({
+  country: "India",
+  code: "INR",
+  symbol: "₹",
+  rate: 1,
+});
+
+useEffect(() => {
+  const saved = localStorage.getItem("selectedCurrency");
+
+  if (saved) {
+    setCurrency(JSON.parse(saved));
+  }
+
+  const handler = (e: any) => {
+    setCurrency(e.detail);
+    localStorage.setItem(
+      "selectedCurrency",
+      JSON.stringify(e.detail)
+    );
+  };
+
+  window.addEventListener(
+    "currency-change",
+    handler
   );
+
+  return () =>
+    window.removeEventListener(
+      "currency-change",
+      handler
+    );
+}, []);
+
+const convertPrice = (price: number) =>
+  Math.round(price * currency.rate);
+
+const subtotal = items.reduce(
+  (sum, item) =>
+    sum +
+    convertPrice(
+      item.product.prices[item.sizeIndex]
+    ) *
+      item.quantity,
+  0
+);
+
+const delivery =
+  currency.code === "INR"
+    ? 80
+    : convertPrice(1500);
+
+const total = subtotal + delivery;
+  // const total = items.reduce(
+  //   (sum, item) =>
+  //     sum + item.product.prices[item.sizeIndex] * item.quantity,
+  //   0
+  // );
 
   return (
     <>
@@ -60,7 +113,7 @@ export function Cart({
             <div className="flex items-center gap-3">
               <ShoppingBag className="w-5 h-5" />
               <h2 className="text-xl font-semibold">
-                Your Cart ({items.length})
+                Your Cart ({items.length} Items)
               </h2>
             </div>
             <button onClick={onClose}>
@@ -148,11 +201,26 @@ export function Cart({
                         </div>
 
                         {/* PRICE */}
-                        <span className="font-semibold">
-                          ₹
-                          {item.product.prices[item.sizeIndex] *
-                            item.quantity}
-                        </span>
+                        <div className="text-right">
+
+                          <p className="font-semibold">
+                            {currency.symbol}
+                            {(
+                              convertPrice(
+                                item.product.prices[item.sizeIndex]
+                              ) * item.quantity
+                            ).toLocaleString()}
+                          </p>
+
+                          <p className="text-xs text-gray-500">
+                            {currency.symbol}
+                            {convertPrice(
+                              item.product.prices[item.sizeIndex]
+                            ).toLocaleString()}
+                            {" "}each
+                          </p>
+
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -164,14 +232,45 @@ export function Cart({
           {/* Footer */}
           {items.length > 0 && (
             <div className="p-6 border-t">
-              <div className="flex justify-between mb-4">
-                <span>Subtotal</span>
-                <span className="font-semibold">₹{total}</span>
+              <div className="space-y-3 mb-5">
+
+                {/* Subtotal */}
+                <div className="flex justify-between">
+                  <span>Subtotal</span>
+
+                  <span className="font-semibold">
+                    {currency.symbol}
+                    {subtotal.toLocaleString()}
+                  </span>
+                </div>
+
+                {/* Delivery */}
+                <div className="flex justify-between">
+                  <span>Delivery</span>
+
+                  <span className="font-semibold">
+                    {currency.symbol}
+                    {delivery.toLocaleString()}
+                  </span>
+                </div>
+
+                <hr />
+
+                {/* Total */}
+                <div className="flex justify-between text-lg font-bold">
+                  <span>Total</span>
+
+                  <span className="text-green-600">
+                    {currency.symbol}
+                    {total.toLocaleString()}
+                  </span>
+                </div>
+
               </div>
 
               <button
                 onClick={onCheckout}
-                className="w-full py-3 bg-black text-white"
+                className="w-full py-3 rounded-lg bg-green-600 hover:bg-green-700 text-white font-semibold transition"
               >
                 Proceed to Checkout
               </button>
