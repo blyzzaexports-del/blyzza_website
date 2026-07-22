@@ -9,23 +9,23 @@ export default function ClientProviders({
 }: {
   children: React.ReactNode;
 }) {
-  const [cartItems, setCartItems] = useState<any[]>([]);
+  const [cartItems, setCartItems] =useState<any[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
-
   const [isLoaded, setIsLoaded] = useState(false);
 
-  /* 🛒 ADD TO CART */
+  /* ---------------- ADD TO CART ---------------- */
+
   const handleAddToCart = useCallback(
     (product: any, sizeIndex: number, quantity: number = 1) => {
       setCartItems((prev) => {
-        const existingItem = prev.find(
+        const existing = prev.find(
           (item) =>
             item.product.id === product.id &&
             item.sizeIndex === sizeIndex
         );
 
-        if (existingItem) {
+        if (existing) {
           return prev.map((item) =>
             item.product.id === product.id &&
             item.sizeIndex === sizeIndex
@@ -52,7 +52,8 @@ export default function ClientProviders({
     []
   );
 
-  /* 🔢 UPDATE QTY */
+  /* ---------------- UPDATE QTY ---------------- */
+
   const handleUpdateQuantity = useCallback(
     (productId: number, sizeIndex: number, delta: number) => {
       setCartItems((prev) =>
@@ -62,12 +63,12 @@ export default function ClientProviders({
               item.product.id === productId &&
               item.sizeIndex === sizeIndex
             ) {
-              const newQuantity = item.quantity + delta;
+              const qty = item.quantity + delta;
 
-              return newQuantity > 0
+              return qty > 0
                 ? {
                     ...item,
-                    quantity: newQuantity,
+                    quantity: qty,
                   }
                 : item;
             }
@@ -80,7 +81,8 @@ export default function ClientProviders({
     []
   );
 
-  /* ❌ REMOVE ITEM */
+  /* ---------------- REMOVE ---------------- */
+
   const handleRemoveItem = useCallback(
     (productId: number, sizeIndex: number) => {
       setCartItems((prev) =>
@@ -96,7 +98,15 @@ export default function ClientProviders({
     []
   );
 
-  /* 🎧 GLOBAL EVENTS */
+  /* ---------------- CLEAR CART ---------------- */
+
+  const clearCart = useCallback(() => {
+    setCartItems([]);
+    localStorage.removeItem("cart");
+  }, []);
+
+  /* ---------------- EVENTS ---------------- */
+
   useEffect(() => {
     const add = (e: any) => {
       handleAddToCart(
@@ -106,7 +116,9 @@ export default function ClientProviders({
       );
     };
 
-    const openCart = () => setIsCartOpen(true);
+    const openCart = () => {
+      setIsCartOpen(true);
+    };
 
     const openCheckout = () => {
       setIsCartOpen(false);
@@ -124,36 +136,40 @@ export default function ClientProviders({
     };
   }, [handleAddToCart]);
 
-  /* 🧠 LOAD CART */
+  /* ---------------- LOAD CART ---------------- */
+
   useEffect(() => {
     try {
-      const savedCart = localStorage.getItem("cart");
+      const saved = localStorage.getItem("cart");
 
-      if (savedCart) {
-        setCartItems(JSON.parse(savedCart));
+      if (saved) {
+        setCartItems(JSON.parse(saved));
       }
     } catch (err) {
-      console.error("Cart load failed", err);
+      console.error(err);
     }
 
     setIsLoaded(true);
   }, []);
 
-  /* 💾 SAVE CART */
+  /* ---------------- SAVE CART ---------------- */
+
   useEffect(() => {
     if (!isLoaded) return;
 
-    try {
-      localStorage.setItem("cart", JSON.stringify(cartItems));
-    } catch (err) {
-      console.error("Cart save failed", err);
-    }
+    localStorage.setItem(
+      "cart",
+      JSON.stringify(cartItems)
+    );
   }, [cartItems, isLoaded]);
 
-  /* 💰 TOTAL */
+  /* ---------------- TOTAL ---------------- */
+
   const total = cartItems.reduce(
     (sum, item) =>
-      sum + item.product.prices[item.sizeIndex] * item.quantity,
+      sum +
+      item.product.prices[item.sizeIndex] *
+        item.quantity,
     0
   );
 
@@ -161,7 +177,6 @@ export default function ClientProviders({
     <>
       {children}
 
-      {/* 🛒 CART */}
       <Cart
         isOpen={isCartOpen}
         onClose={() => setIsCartOpen(false)}
@@ -174,10 +189,11 @@ export default function ClientProviders({
         }}
       />
 
-      {/* 💳 CHECKOUT */}
       <Checkout
         isOpen={isCheckoutOpen}
-        onClose={() => setIsCheckoutOpen(false)}
+        onClose={() => {
+          setIsCheckoutOpen(false);
+        }}
         items={cartItems}
         total={total}
       />

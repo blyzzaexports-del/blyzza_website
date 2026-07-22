@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState,useEffect  } from "react";
 import confetti from "canvas-confetti";
 import { Toast } from "@/components/Toast";
 
@@ -32,15 +32,25 @@ const [selectedCurrency, setSelectedCurrency] = useState<any>({
 });
 
 // Load selected currency
-useState(() => {
-  if (typeof window !== "undefined") {
+useEffect(() => {
+  if (!isOpen) return;
+
+  const loadCurrency = () => {
     const saved = localStorage.getItem("selectedCurrency");
 
     if (saved) {
       setSelectedCurrency(JSON.parse(saved));
     }
-  }
-});
+  };
+
+  loadCurrency();
+
+  window.addEventListener("currency-change", loadCurrency);
+
+  return () => {
+    window.removeEventListener("currency-change", loadCurrency);
+  };
+}, [isOpen]);
 
 // Delivery Charge
 const DELIVERY_CHARGE =
@@ -48,7 +58,7 @@ const DELIVERY_CHARGE =
 
 // Currency Conversion
 const convert = (amount: number) =>
-  (amount / selectedCurrency.rate).toFixed(2);
+  (amount * selectedCurrency.rate).toFixed(2);
 
 const finalTotal = total + DELIVERY_CHARGE;
 
@@ -251,7 +261,7 @@ const finalTotal = total + DELIVERY_CHARGE;
 
               // ✅ CLEAR CART
               localStorage.removeItem("cart");
-
+              window.dispatchEvent(new Event("cart-cleared"));
               showToast(
                 "Payment successful 🎉",
                 "success"
