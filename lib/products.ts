@@ -33,7 +33,7 @@ export const products: Product[] = [
   id: 2,
   name: "Organic Beauty Kit",
   sizes: ["100gm"],
-  prices: [599],
+  prices: [499],
   comboIncludes: [
     "Aloe Vera Gel - 100gm",
     "Hibiscus Powder - 10g",
@@ -156,7 +156,7 @@ Suitable for:
     id: 3,
     name: "Hibiscus Powder",
     sizes: ["50gm", "100gm", "200gm"],
-    prices: [99, 149, 199],
+    prices: [99, 199, 279],
     image: [
       "/about/hibiscus1.jpg",
       "/about/hibiscus2.jpg",
@@ -180,7 +180,7 @@ Suitable for:
     name: "Chamomile Powder",
 
     sizes: ["50gm", "100gm", "200gm"],
-    prices: [109, 159, 209],
+    prices: [109, 299, 379],
 
     image: [
       "/about/Chamomile1.jpg",
@@ -215,7 +215,7 @@ Suitable for:
   name: "Butterfly Pea Powder",
 
   sizes: ["50gm", "100gm", "200gm"],
-  prices: [149, 229, 309],
+  prices: [149, 249, 309],
 
   // ⚠️ IMPORTANT
   image: [
@@ -279,8 +279,72 @@ Suitable for:
   // ✅ INGREDIENTS 🔥
   ingredients: `100% Natural Moringa Leaf Powder`,
 },
-  {
+{
   id: 7,
+  name: "Moringa Leaf Soup Powder",
+
+  sizes: ["50gm", "100gm", "200gm"],
+  prices: [99, 149, 199],
+
+  image: [
+    "/about/moringaSoup1.jpg",
+    "/about/moringaSoup2.jpg",
+    "/about/moringaSoup3.jpg",
+    "/about/moringaSoup4.jpg",
+  ],
+
+  category: "food",
+
+  // ✅ DESCRIPTION 🔥
+  description: `Enjoy the wholesome goodness of BLYZZA Moringa Leaf Soup Powder, made from carefully selected moringa leaves known for their high nutritional value. This flavorful and healthy soup mix is packed with essential vitamins, minerals, and antioxidants that support overall wellness. Easy to prepare and naturally nourishing, it is a perfect choice for a quick, healthy meal that boosts energy and supports immunity. Suitable for all age groups, this soup powder is a delicious way to include moringa in your daily diet.`,
+
+  // ✅ BENEFITS 🔥
+  benefits: `• Rich in vitamins, minerals, and antioxidants  
+• Supports immunity and overall health  
+• Helps improve digestion  
+• Provides natural energy and nourishment  
+• Quick and easy healthy meal option`,
+
+  // ✅ HOW TO USE 🔥
+  howToUse: `Add 1–2 teaspoons of moringa soup powder to a cup of hot water. Stir well and simmer for 3–5 minutes. Add salt or spices as needed. Serve hot and enjoy a nutritious, refreshing soup.`,
+
+  // ✅ INGREDIENTS 🔥
+  ingredients: `100% Natural Moringa Leaf Powder`,
+},
+{
+  id: 8,
+  name: "Moringa Flower Powder",
+
+  sizes: ["100gm"],
+  prices: [700],
+
+  image: [
+    "/about/moringaFlower1.jpg",
+    "/about/moringaFlower2.jpg",
+    "/about/moringaFlower3.jpg",
+    "/about/moringaFlower4.jpg",
+  ],
+
+  category: "Food",
+
+  // ✅ DESCRIPTION 🔥
+  description: `Discover the gentle care of BLYZZA Moringa Flower Powder, made from naturally dried moringa flowers known for their soothing and skin-enhancing properties. This herbal powder helps cleanse the skin, improve texture, and promote a soft, radiant glow. Rich in natural nutrients, it can be used as a face pack by mixing with water, rose water, or milk to nourish and refresh the skin. Suitable for all skin types, this chemical-free powder is a perfect addition to your natural skincare routine.`,
+
+  // ✅ BENEFITS 🔥
+  benefits: `• Helps gently cleanse and refresh the skin  
+• Improves skin texture and softness  
+• Supports natural glow and radiance  
+• Soothes and calms the skin  
+• Suitable for all skin types`,
+
+  // ✅ HOW TO USE 🔥
+  howToUse: `Mix required amount of moringa flower powder with water, rose water, or milk to form a smooth paste. Apply evenly on face or skin and leave it for 15–20 minutes. Rinse off with lukewarm water. Use 2–3 times a week for best results.`,
+
+  // ✅ INGREDIENTS 🔥
+  ingredients: `100% Natural Moringa Flower Powder`,
+},
+  {
+  id: 9,
   name: "Senna Leaves",
 
   sizes: ["100gm", "200gm"],
@@ -315,11 +379,11 @@ Suitable for:
   ingredients: `100% Natural Senna Leaves Powder`,
 },
   {
-  id:8 ,
+  id:10,
   name: "Goat Milk White Soap",
 
   sizes: ["100gm"],
-  prices: [199],
+  prices: [210],
 
   // ✅ FIXED
   image: [
@@ -351,11 +415,11 @@ Suitable for:
   ingredients: `Goat Milk, Natural Oils, Herbal Base`,
 },
 {
-  id: 9,
+  id: 11,
   name: "Neem Soap",
 
   sizes: ["100gm"],
-  prices: [199],
+  prices: [210],
 
   // ✅ FIXED
   image: [
@@ -387,11 +451,11 @@ Suitable for:
   ingredients: `Goat Milk, Natural Oils, Herbal Base`,
 },
   {
-  id: 10,
+  id: 12,
   name: "Nettle Soap(Kuppaimeni)",
 
   sizes: ["100gm"],
-  prices: [229],
+  prices: [210],
 
   // ✅ FIXED
   image: [
@@ -423,11 +487,11 @@ Suitable for:
   ingredients: `Nettle Extract, Natural Oils, Herbal Base`,
 },
   {
-  id: 11,
+  id: 13,
   name: "Manjistha & Coconut Soap",
 
   sizes: ["100gm"],
-  prices: [229],
+  prices: [210],
 
   // ✅ FIXED
   image: [
@@ -459,11 +523,11 @@ Suitable for:
   ingredients: `Manjistha Extract, Coconut Oil, Natural Oils, Herbal Base`,
 },
   {
-  id: 12,
+  id: 14,
   name: "Red Clay Soap",
 
   sizes: ["100gm"],
-  prices: [229],
+  prices: [210],
 
   // ✅ FIXED
   image: [
@@ -495,11 +559,11 @@ Suitable for:
   ingredients: `Red Clay, Coconut Oil, Natural Oils, Herbal Base`,
 },
   {
-  id: 13,
+  id: 15,
   name: "Pappaya Soap",
 
   sizes: ["100gm"],
-  prices: [229],
+  prices: [210],
 
   // ✅ FIXED
   image: [
@@ -532,11 +596,11 @@ Suitable for:
   ingredients: `Papaya Extract, Coconut Oil, Natural Oils, Herbal Base`,
 },
   {
-  id: 14,
+  id: 16,
   name: "Nochi Soap",
 
   sizes: ["100gm"],
-  prices: [229],
+  prices: [210],
 
   // ✅ FIXED
   image: [
@@ -577,11 +641,11 @@ Suitable for:
                 • Natural Plant Powders`,
 },
 {
-  id: 15,
+  id: 17,
   name: "Potato&Charcoal  Soap",
 
   sizes: ["100gm"],
-  prices: [229],
+  prices: [210],
 
   // ✅ FIXED
   image: [
@@ -627,11 +691,11 @@ Suitable for:
                   •   Vegetable Based Soap Base`,
 },
 {
-  id: 16,
+  id: 18,
   name: " Aavarampoo Soap",
 
   sizes: ["100gm"],
-  prices: [229],
+  prices: [210],
 
   // ✅ FIXED
   image: [
@@ -676,11 +740,11 @@ Suitable for:
                 • Vegetable Based Soap Base`,
 },
 {
-  id: 17,
+  id: 19,
   name: "NalanguMaavu Soap",
 
   sizes: ["100gm"],
-  prices: [229],
+  prices: [210],
 
   // ✅ FIXED
   image: [
@@ -727,8 +791,158 @@ Suitable for:
                 •   Natural Fragrance
                 •   Vegetable Based Soap Base`,
 },
+{
+  id: 20,
+  name: "Moringa Soap",
+
+  sizes: ["100gm"],
+  prices: [210],
+
+  // ✅ FIXED
+  image: [
+    "/about/MoringaSoap.jpg",
+  ],
+
+  category: "soaps",
+
+  // ✅ DESCRIPTION 🔥
+  description: `Moringa Herbal Soap – Natural Skin Nourishment
+                Our Moringa Herbal Soap is carefully crafted using the nutrient-rich goodness of moringa, known as the “Miracle Tree.” Infused with essential vitamins and antioxidants, it gently cleanses the skin while providing deep nourishment and hydration. This soap helps remove impurities without stripping away natural oils, leaving your skin feeling soft, smooth, and refreshed.
+                With regular use, it supports a healthier-looking complexion by improving skin texture and promoting a natural glow. Mild and soothing, it is suitable for all skin types, including sensitive skin. Made with natural ingredients and free from harsh chemicals, this soap offers a pure and refreshing bathing experience inspired by nature.`,
+
+  // ✅ BENEFITS 🔥
+  benefits: `   •🌿 Traditional Herbal Cleansing
+                  Inspired by the goodness of Nalangu Maavu, it provides a natural and refreshing cleansing experience.
+                • ✨ Helps Maintain Soft & Smooth Skin
+                  Gentle herbal care helps keep the skin feeling soft, smooth, and comfortable.
+                • 🍃 Natural Freshness Experience
+                  Herbal ingredients provide a refreshing feel and a pleasant bathing experience.
+                •🛁 Premium Handmade Bath Care
+                  Crafted to deliver a luxurious bathing ritual with traditional-inspired ingredients.
+                •🌸 Everyday Skin Care Support
+                  Suitable for regular bathing, helping you enjoy a clean and refreshed skin feel.`,
+
+  // ✅ HOW TO USE 🔥
+  howToUse: ` • Deep Cleansing – Removes dirt, oil, and impurities gently
+              • Rich in Antioxidants – Helps protect skin from damage and aging
+              • Moisturizing – Keeps skin soft, smooth, and hydrated
+              • Improves Skin Glow – Enhances natural radiance and brightness
+              • Anti-Acne Properties – Helps reduce pimples and breakouts
+              • Soothes Skin – Calms irritation and is good for sensitive skin
+              • Evens Skin Tone – Supports clearer and more even-looking skin
+              • Natural & Chemical-Free – Safe for daily use`,
+
+  // ✅ INGREDIENTS 🔥
+  ingredients: `• Moringa Leaf Powder / Extract
+                • Coconut Oil
+                •   Castor Oil
+                •   Olive Oil
+                •   Shea Butter
+                •   Glycerin
+                •   Coconut Oil
+                •   Olive Oil
+                •   Castor Oil
+                •   Natural Fragrance
+                •   Vegetable Based Soap Base`,
+},
+{
+  id: 21,
+  name: "Moringa Seed Oil",
+
+  sizes: ["50ml", "100ml", "200ml"],
+  prices: [199, 349, 599],
+
+  image: [
+    "/about/moringaOil1.jpg",
+    "/about/moringaOil2.jpg",
+    "/about/moringaOil3.jpg",
+    "/about/moringaOil4.jpg",
+  ],
+
+  category: "Oils",
+
+  // ✅ DESCRIPTION 🔥
+  description: `Experience the nourishing power of BLYZZA Moringa Seed Oil, extracted from high-quality moringa seeds known for their rich nutrients and skin-loving properties. This lightweight, non-greasy oil deeply moisturizes the skin, helps improve texture, and promotes a healthy, radiant glow. Packed with essential fatty acids and antioxidants, it supports skin hydration and protection. Suitable for both skin and hair care, this natural oil is a perfect addition to your daily beauty routine.`,
+
+  // ✅ BENEFITS 🔥
+  benefits: `• Deeply moisturizes and nourishes skin  
+• Rich in antioxidants and essential fatty acids  
+• Improves skin softness and smoothness  
+• Helps reduce dryness and dullness  
+• Suitable for skin and hair care`,
+
+  // ✅ HOW TO USE 🔥
+  howToUse: `Take a few drops of moringa seed oil and gently massage onto clean skin until fully absorbed. For hair, apply to scalp and lengths, leave for 30 minutes or overnight, then wash off. Use regularly for best results.`,
+
+  // ✅ INGREDIENTS 🔥
+  ingredients: `100% Pure Moringa Seed Oil`,
+},
+{
+  id: 22,
+  name: "Castor Oil",
+
+  sizes: ["50ml", "100ml", "200ml"],
+  prices: [149, 249, 399],
+
+  image: [
+    "/about/castor1.jpg",
+    "/about/castor2.jpg",
+    "/about/castor3.jpg",
+    "/about/castor4.jpg",
+  ],
+
+  category: "Oils",
+
+  // ✅ DESCRIPTION 🔥
+  description: `Experience the natural benefits of BLYZZA Castor Oil, extracted from high-quality castor seeds and known for its rich, nourishing properties. This thick, nutrient-rich oil deeply hydrates the skin and supports healthy hair growth. Packed with essential fatty acids, it helps improve hair strength, adds shine, and keeps skin soft and smooth. Suitable for skin, hair, and scalp care, this multipurpose oil is a must-have for your daily beauty routine.`,
+
+  // ✅ BENEFITS 🔥
+  benefits: `• Deeply moisturizes and nourishes skin  
+• Supports healthy hair growth  
+• Strengthens hair and reduces breakage  
+• Adds natural shine to hair  
+• Suitable for skin, hair, and scalp care`,
+
+  // ✅ HOW TO USE 🔥
+  howToUse: `Take a small amount of castor oil and gently massage onto skin or scalp. For hair, apply from roots to ends, leave for 30 minutes or overnight, then wash off with a mild shampoo. Use regularly for best results.`,
+
+  // ✅ INGREDIENTS 🔥
+  ingredients: `100% Pure Castor Oil`,
+},
+{
+  id: 23,
+  name: "Neem Oil",
+
+  sizes: ["50ml", "100ml", "200ml"],
+  prices: [159, 269, 429],
+
+  image: [
+    "/about/neemoil1.jpg",
+    "/about/neemoil2.jpg",
+    "/about/neemoil3.jpg",
+    "/about/neemoil4.jpg",
+  ],
+
+  category: "Oils",
+
+  // ✅ DESCRIPTION 🔥
+  description: `Experience the purifying power of BLYZZA Neem Oil, extracted from high-quality neem seeds known for their powerful antibacterial and skin-cleansing properties. This natural oil helps cleanse the skin, reduce excess oil, and support a clearer, healthier-looking complexion. Rich in essential nutrients, it also nourishes the scalp and promotes healthier hair. Ideal for both skin and hair care, this multipurpose oil is a must-have for your natural beauty routine.`,
+
+  // ✅ BENEFITS 🔥
+  benefits: `• Helps reduce acne and skin impurities  
+• Supports clear and healthy-looking skin  
+• Controls excess oil production  
+• Nourishes scalp and promotes healthy hair  
+• Suitable for skin and hair care`,
+
+  // ✅ HOW TO USE 🔥
+  howToUse: `Take a few drops of neem oil and dilute with a carrier oil before applying to skin or scalp. Gently massage and leave for 20–30 minutes, then rinse off. For hair, apply to scalp and lengths before washing. Use regularly for best results.`,
+
+  // ✅ INGREDIENTS 🔥
+  ingredients: `100% Pure Neem Oil`,
+},
   {
-  id: 18,
+  id: 24,
   name: "Shea Butter",
 
   sizes: ["100gm", "200gm", "500gm"],
