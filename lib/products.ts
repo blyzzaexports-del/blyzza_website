@@ -293,7 +293,7 @@ Suitable for:
     "/about/moringaSoup4.jpg",
   ],
 
-  category: "food",
+  category: "Food",
 
   // ✅ DESCRIPTION 🔥
   description: `Enjoy the wholesome goodness of BLYZZA Moringa Leaf Soup Powder, made from carefully selected moringa leaves known for their high nutritional value. This flavorful and healthy soup mix is packed with essential vitamins, minerals, and antioxidants that support overall wellness. Easy to prepare and naturally nourishing, it is a perfect choice for a quick, healthy meal that boosts energy and supports immunity. Suitable for all age groups, this soup powder is a delicious way to include moringa in your daily diet.`,
