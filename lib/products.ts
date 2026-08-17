@@ -568,6 +568,11 @@ Suitable for:
   // ✅ FIXED
   image: [
     "/about/pappaya.jpg",
+    "/about/pappaya1.jpg",
+    "/about/pappaya2.jpg",
+    "/about/pappaya3.jpg",
+    "/about/pappaya4.jpg",
+    "/about/pappaya5.jpg",
   ],
 
   category: "soaps",
@@ -605,6 +610,11 @@ Suitable for:
   // ✅ FIXED
   image: [
     "/about/nochi.jpg",
+    "/about/nochi1.jpg",
+    "/about/nochi2.jpg",
+    "/about/nochi3.jpg",
+    "/about/nochi4.jpg",
+    "/about/nochi5.jpg",
   ],
 
   category: "soaps",
@@ -650,6 +660,11 @@ Suitable for:
   // ✅ FIXED
   image: [
     "/about/PotatoCharcoal.jpg",
+    "/about/PotatoCharcoal1.jpg",
+    "/about/PotatoCharcoal2.jpg",
+    "/about/PotatoCharcoal3.jpg",
+    "/about/PotatoCharcoal4.jpg",
+    "/about/PotatoCharcoal5.jpg",
   ],
 
   category: "soaps",
@@ -699,7 +714,12 @@ Suitable for:
 
   // ✅ FIXED
   image: [
+    "/about/Aavarampoo1.jpg",
     "/about/Aavarampoo.jpg",
+    "/about/Aavarampoo2.jpg",
+    "/about/Aavarampoo3.jpg",
+    "/about/Aavarampoo4.jpg",
+    "/about/Aavarampoo5.jpg",
   ],
 
   category: "soaps",
@@ -748,7 +768,13 @@ Suitable for:
 
   // ✅ FIXED
   image: [
+    "/about/NalanguMaavu1.jpg",
     "/about/NalanguMaavu.jpg",
+    "/about/NalanguMaavu2.jpg",
+    "/about/NalanguMaavu3.jpg",
+    "/about/NalanguMaavu4.jpg",
+    "/about/NalanguMaavu5.jpg",
+    "/about/NalanguMaavu6.jpg",
   ],
 
   category: "soaps",
@@ -800,7 +826,13 @@ Suitable for:
 
   // ✅ FIXED
   image: [
+    "/about/MoringaSoap1.jpg",
     "/about/MoringaSoap.jpg",
+    "/about/MoringaSoap2.jpg",
+    "/about/MoringaSoap3.jpg",
+    "/about/MoringaSoap4.jpg",
+    "/about/MoringaSoap5.jpg",
+    "/about/MoringaSoap6.jpg",
   ],
 
   category: "soaps",
@@ -853,10 +885,10 @@ Suitable for:
   prices: [199, 349, 599],
 
   image: [
-    "/about/moringaOil1.jpg",
-    "/about/moringaOil2.jpg",
-    "/about/moringaOil3.jpg",
-    "/about/moringaOil4.jpg",
+    "/about/moringaseedoil1.jpg",
+    "/about/moringaseedoil2.jpg",
+    "/about/moringaseedoil3.jpg",
+    "/about/moringaseedoil4.jpg",
   ],
 
   category: "Oils",
@@ -886,9 +918,9 @@ Suitable for:
 
   image: [
     "/about/castor1.jpg",
-    "/about/castor2.jpg",
-    "/about/castor3.jpg",
-    "/about/castor4.jpg",
+    // "/about/castor2.jpg",
+    // "/about/castor3.jpg",
+    // "/about/castor4.jpg",
   ],
 
   category: "Oils",
@@ -917,10 +949,14 @@ Suitable for:
   prices: [159, 269, 429],
 
   image: [
+    "/about/neemoil.jpg",
     "/about/neemoil1.jpg",
     "/about/neemoil2.jpg",
     "/about/neemoil3.jpg",
     "/about/neemoil4.jpg",
+    "/about/neemoil5.jpg",
+    "/about/neemoil6.jpg",
+    "/about/neemoil7.jpg",
   ],
 
   category: "Oils",
