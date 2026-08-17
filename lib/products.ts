@@ -881,8 +881,8 @@ Suitable for:
   id: 21,
   name: "Moringa Seed Oil",
 
-  sizes: ["50ml", "100ml", "200ml"],
-  prices: [199, 349, 599],
+  sizes: ["100ml"],
+  prices: [800],
 
   image: [
     "/about/moringaseedoil1.jpg",
@@ -913,8 +913,8 @@ Suitable for:
   id: 22,
   name: "Castor Oil",
 
-  sizes: ["50ml", "100ml", "200ml"],
-  prices: [149, 249, 399],
+  sizes: ["100ml"],
+  prices: [126],
 
   image: [
     "/about/castor1.jpg",
@@ -945,8 +945,8 @@ Suitable for:
   id: 23,
   name: "Neem Oil",
 
-  sizes: ["50ml", "100ml", "200ml"],
-  prices: [159, 269, 429],
+  sizes: ["100ml"],
+  prices: [120],
 
   image: [
     "/about/neemoil.jpg",
