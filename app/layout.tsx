@@ -20,8 +20,6 @@ const poppins = Poppins({
 });
 
 /* ✅ METADATA */
-// import type { Metadata } from "next";
-
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.blyzza.com"),
 
@@ -45,9 +43,9 @@ export const viewport: Viewport = {
 
 export default function RootLayout({
   children,
-}: {
+}: Readonly<{
   children: React.ReactNode;
-}) {
+}>) {
   return (
     <html
       lang="en"
@@ -55,13 +53,29 @@ export default function RootLayout({
     >
       <body className="font-sans antialiased bg-white text-black">
 
-        {/* 🔥 GLOBAL PROVIDERS (COUNTRY + STORE + ETC) */}
+        {/* 🔥 GLOBAL PROVIDERS */}
         <ClientProviders>
           {children}
         </ClientProviders>
 
-        {/* 📊 ANALYTICS */}
+        {/* 📊 VERCEL ANALYTICS */}
         <Analytics />
+
+        {/* 📊 GOOGLE ANALYTICS 4 */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-2CD32V5R08"
+          strategy="afterInteractive"
+        />
+
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){window.dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'G-2CD32V5R08');
+          `}
+        </Script>
 
         {/* 💳 RAZORPAY SCRIPT */}
         <Script
