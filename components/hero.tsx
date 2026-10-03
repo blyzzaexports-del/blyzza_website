@@ -21,6 +21,7 @@ export function Hero() {
         <Image
           src="/about/background.jpg"
           alt="Natural skincare ingredients"
+          title="Natural Skincare Ingredients"
           fill
           className="object-cover"
           priority

@@ -108,6 +108,7 @@ const price = (
           <Image
             src={product.image?.[0] || "/fallback.jpg"}
             alt={product.name}
+            title={product.name}
             width={500}
             height={500}
             className="w-full object-cover"

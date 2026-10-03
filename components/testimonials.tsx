@@ -13,6 +13,7 @@ const testimonials = [
     image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&q=80",
     rating: 5,
     text: "Blyzza products have completely transformed my skincare routine.",
+    
   },
   {
     id: 2,
@@ -69,10 +70,15 @@ export function Testimonials() {
 
           {current.type === "text" ? (
             <div className="text-center">
-
-              <div className="w-24 h-24 mx-auto mb-4 relative rounded-full overflow-hidden">
-                <Image src={current.image} alt="" fill className="object-cover" />
-              </div>
+            <div className="w-24 h-24 mx-auto mb-4 relative rounded-full overflow-hidden">
+              <Image
+                src={current.image}
+                alt="Portrait displayed with a Blyzza skincare testimonial"
+                title="Blyzza Skincare Testimonial Portrait"
+                fill
+                className="object-cover"
+              />
+            </div>
 
               <div className="flex justify-center gap-1 mb-4">
                 {Array.from({ length: current.rating }).map((_, i) => (

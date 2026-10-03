@@ -65,7 +65,8 @@ export default function ProductPage() {
               <Image
                 key={i}
                 src={img}
-                alt="thumb"
+                alt={`${product.name} - product image ${i + 1}`}
+                title={`${product.name} - Image ${i + 1}`}
                 width={80}
                 height={80}
                 onClick={() => setSelectedImage(img)}
@@ -80,7 +81,8 @@ export default function ProductPage() {
           <div className="flex-1">
             <Image
               src={selectedImage}
-              alt="product"
+              alt={`${product.name} - ${selectedImage.split("/").pop()?.replace(/\.[^/.]+$/, "").replace(/[-_]/g, " ")}`}
+              title={`${product.name} - Product Image`}
               width={600}
               height={600}
               className="w-full rounded-lg object-cover"

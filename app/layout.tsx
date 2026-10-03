@@ -20,14 +20,18 @@ const poppins = Poppins({
 });
 
 /* ✅ METADATA */
-export const metadata: Metadata = {
-  title: "Blyzza | Premium Herbal Skincare",
-  description: "Natural skincare products made with traditional herbal care.",
+// import type { Metadata } from "next";
 
-  icons: {
-    icon: "/favicon.ico",
-    shortcut: "/favicon.ico",
-    apple: "/icon.png",
+export const metadata: Metadata = {
+  metadataBase: new URL("https://www.blyzza.com"),
+
+  title: "Blyzza | Premium Herbal Skincare Products Online",
+
+  description:
+    "Shop Blyzza for premium herbal skincare products made with traditional herbal care. Discover natural skincare essentials for your daily beauty routine.",
+
+  alternates: {
+    canonical: "/",
   },
 };
 

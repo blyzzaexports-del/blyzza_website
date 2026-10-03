@@ -145,6 +145,7 @@ export function Navbar({
             <Image
               src="/about/logo.png"
               alt="Blyzza Logo"
+              title="Blyzza Logo"
               width={140}
               height={50}
               className="object-contain"

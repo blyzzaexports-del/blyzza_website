@@ -139,6 +139,7 @@ const total = subtotal + delivery;
                       <Image
                         src={item.product.image?.[0] || "/fallback.jpg"}
                         alt={item.product.name}
+                        title={item.product.name}
                         fill
                         className="object-cover rounded"
                       />

@@ -762,10 +762,8 @@ Suitable for:
 {
   id: 19,
   name: "NalanguMaavu Soap",
-
   sizes: ["100gm"],
   prices: [210],
-
   // ✅ FIXED
   image: [
     "/about/NalanguMaavu1.jpg",
@@ -776,14 +774,11 @@ Suitable for:
     "/about/NalanguMaavu5.jpg",
     "/about/NalanguMaavu6.jpg",
   ],
-
   category: "soaps",
-
   // ✅ DESCRIPTION 🔥
   description: `Experience the goodness of traditional herbal skincare with BLYZZA Nalangu Maavu Soap. Inspired by the ancient beauty ritual of Nalangu Maavu, this handmade bathing bar combines natural herbal ingredients to provide a refreshing and nourishing bathing experience.
                 Crafted with a blend of traditional botanicals, BLYZZA Nalangu Maavu Soap gently cleanses the skin while leaving it feeling soft, fresh, and naturally cared for. Its herbal essence brings a premium spa-like feel to your daily bathing routine.
                 Designed for those who love natural-inspired skincare, this soap blends traditional wellness with modern handmade craftsmanship for a luxurious bathing experience.`,
-
   // ✅ BENEFITS 🔥
   benefits: `   •🌿 Traditional Herbal Cleansing
                   Inspired by the goodness of Nalangu Maavu, it provides a natural and refreshing cleansing experience.
@@ -795,14 +790,12 @@ Suitable for:
                   Crafted to deliver a luxurious bathing ritual with traditional-inspired ingredients.
                 •🌸 Everyday Skin Care Support
                   Suitable for regular bathing, helping you enjoy a clean and refreshed skin feel.`,
-
   // ✅ HOW TO USE 🔥
   howToUse: ` • Wet your skin with clean water before using the soap.
               • Gently apply BLYZZA Nalangu Maavu Soap on your body and create a rich lather.
               • Massage the lather softly over the skin for a refreshing herbal bathing experience.
               • Rinse thoroughly with clean water.
               • After use, keep the soap in a dry place to maintain its quality and freshness.`,
-
   // ✅ INGREDIENTS 🔥
   ingredients: `• Nalangu Maavu Herbal Blend
                 • Green Gram (Moong Dal) Extract
@@ -820,28 +813,24 @@ Suitable for:
 {
   id: 20,
   name: "Moringa Soap",
-
   sizes: ["100gm"],
   prices: [210],
 
   // ✅ FIXED
   image: [
-    "/about/MoringaSoap1.jpg",
     "/about/MoringaSoap.jpg",
+    "/about/MoringaSoap1.jpg",
     "/about/MoringaSoap2.jpg",
     "/about/MoringaSoap3.jpg",
     "/about/MoringaSoap4.jpg",
     "/about/MoringaSoap5.jpg",
     "/about/MoringaSoap6.jpg",
   ],
-
   category: "soaps",
-
   // ✅ DESCRIPTION 🔥
   description: `Moringa Herbal Soap – Natural Skin Nourishment
                 Our Moringa Herbal Soap is carefully crafted using the nutrient-rich goodness of moringa, known as the “Miracle Tree.” Infused with essential vitamins and antioxidants, it gently cleanses the skin while providing deep nourishment and hydration. This soap helps remove impurities without stripping away natural oils, leaving your skin feeling soft, smooth, and refreshed.
                 With regular use, it supports a healthier-looking complexion by improving skin texture and promoting a natural glow. Mild and soothing, it is suitable for all skin types, including sensitive skin. Made with natural ingredients and free from harsh chemicals, this soap offers a pure and refreshing bathing experience inspired by nature.`,
-
   // ✅ BENEFITS 🔥
   benefits: `   •🌿 Traditional Herbal Cleansing
                   Inspired by the goodness of Nalangu Maavu, it provides a natural and refreshing cleansing experience.
@@ -853,7 +842,6 @@ Suitable for:
                   Crafted to deliver a luxurious bathing ritual with traditional-inspired ingredients.
                 •🌸 Everyday Skin Care Support
                   Suitable for regular bathing, helping you enjoy a clean and refreshed skin feel.`,
-
   // ✅ HOW TO USE 🔥
   howToUse: ` • Deep Cleansing – Removes dirt, oil, and impurities gently
               • Rich in Antioxidants – Helps protect skin from damage and aging
@@ -863,7 +851,6 @@ Suitable for:
               • Soothes Skin – Calms irritation and is good for sensitive skin
               • Evens Skin Tone – Supports clearer and more even-looking skin
               • Natural & Chemical-Free – Safe for daily use`,
-
   // ✅ INGREDIENTS 🔥
   ingredients: `• Moringa Leaf Powder / Extract
                 • Coconut Oil
