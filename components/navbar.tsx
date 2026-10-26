@@ -126,15 +126,13 @@ export function Navbar({
   ];
 
   return (
-
-    <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled
-          ? "bg-white/90 backdrop-blur-md shadow-md py-3"
-          : "bg-transparent py-5"
-      }`}
-    >
-
+        <nav
+          className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+            isScrolled
+              ? "bg-white/20 backdrop-blur-sm shadow-none border-0 py-0.25"
+              : "bg-transparent shadow-none border-0 py-0.25"
+          }`}
+        >
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex items-center justify-between w-full">
           {/* LOGO */}
@@ -146,8 +144,8 @@ export function Navbar({
               src="/about/logo.png"
               alt="Blyzza Logo"
               title="Blyzza Logo"
-              width={140}
-              height={50}
+              width={90}
+              height={30}
               className="object-contain"
             />
           </Link>

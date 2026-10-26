@@ -24,9 +24,7 @@ export const products: Product[] = [
 • Helps maintain soft and smooth skin  
 • Lightweight, non-greasy formula  
 • Suitable for all skin types`,
-  // ✅ HOW TO USE 🔥
   howToUse: `Take a small amount of aloe vera gel and apply evenly on clean skin or scalp. Gently massage until fully absorbed. It can be used as a daily moisturizer, soothing gel, or hair conditioner. Use regularly for best results.`,
-  // ✅ INGREDIENTS 🔥
   ingredients: `Aloe Vera Extract, Coconut Oil, Shea Butter, Castor Oil, Olive Oil, Glycerin, Vitamin E, Natural Essential Oils, Herbal Base`,
 },
   {
@@ -41,18 +39,12 @@ export const products: Product[] = [
     "Butterfly Pea Powder - 10g",
   ],
   image: [
-    "/about/aloecombo1.jpg",
-    // "/about/aloecombo2.jpg",
+    "/about/aloecombo1.webp",
     "/about/aloecombo3.jpg",
-    // "/about/aloecombo4.jpg",
-    // "/about/aloecombo5.jpg",
     "/about/aloecombo6.jpg",
-    // "/about/aloecombo7.jpg",
-    // "/about/aloecombo8.jpg",
     "/about/aloecombo9.jpg",
   ],
   category: "skincare",
-  // ✅ DESCRIPTION 🔥
   description: `✨ BLYZZA Herbal Beauty & Wellness Powders ✨
 
 Nature’s goodness for your skin, hair & inner wellness 🌿
@@ -158,7 +150,7 @@ Suitable for:
     sizes: ["50gm", "100gm", "200gm"],
     prices: [99, 199, 279],
     image: [
-      "/about/hibiscus1.jpg",
+      "/about/hibiscus1.webp",
       "/about/hibiscus2.jpg",
       "/about/hibiscus3.jpg",
       "/about/hibiscus4.jpg",
@@ -183,7 +175,7 @@ Suitable for:
     prices: [109, 299, 379],
 
     image: [
-      "/about/Chamomile1.jpg",
+      "/about/Chamomile1.webp",
       "/about/Chamomile2.jpg",
       "/about/Chamomile3.jpg",
       "/about/Chamomile4.jpg",
@@ -219,7 +211,7 @@ Suitable for:
 
   // ⚠️ IMPORTANT
   image: [
-    "/about/Butterfly1.jpg",
+    "/about/Butterfly1.webp",
     "/about/Butterfly2.jpg",
     "/about/Butterfly3.jpg",
     "/about/Butterfly4.jpg",
