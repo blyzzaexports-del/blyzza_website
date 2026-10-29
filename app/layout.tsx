@@ -1,3 +1,4 @@
+
 import type { Metadata, Viewport } from "next";
 import { Playfair_Display, Poppins } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
@@ -19,7 +20,6 @@ const poppins = Poppins({
   display: "swap",
 });
 
-/* ✅ METADATA + FACEBOOK DOMAIN VERIFICATION */
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.blyzza.com"),
 
@@ -37,7 +37,6 @@ export const metadata: Metadata = {
   },
 };
 
-/* ✅ VIEWPORT */
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
@@ -56,16 +55,15 @@ export default function RootLayout({
       className={`${playfair.variable} ${poppins.variable}`}
     >
       <body className="font-sans antialiased bg-white text-black">
-
-        {/* 🔥 GLOBAL PROVIDERS */}
+        {/* Global Providers */}
         <ClientProviders>
           {children}
         </ClientProviders>
 
-        {/* 📊 VERCEL ANALYTICS */}
+        {/* Vercel Analytics */}
         <Analytics />
 
-        {/* 📊 GOOGLE ANALYTICS 4 */}
+        {/* Google Analytics 4 */}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-2CD32V5R08"
           strategy="afterInteractive"
@@ -76,17 +74,59 @@ export default function RootLayout({
             window.dataLayer = window.dataLayer || [];
             function gtag(){window.dataLayer.push(arguments);}
             gtag('js', new Date());
-
             gtag('config', 'G-2CD32V5R08');
           `}
         </Script>
 
-        {/* 💳 RAZORPAY SCRIPT */}
+        {/* Meta Pixel */}
+        <Script id="meta-pixel" strategy="afterInteractive">
+          {`
+            !function(f,b,e,v,n,t,s)
+            {
+              if(f.fbq)return;
+              n=f.fbq=function(){
+                n.callMethod
+                  ? n.callMethod.apply(n,arguments)
+                  : n.queue.push(arguments)
+              };
+              if(!f._fbq)f._fbq=n;
+              n.push=n;
+              n.loaded=!0;
+              n.version='2.0';
+              n.queue=[];
+              t=b.createElement(e);
+              t.async=!0;
+              t.src=v;
+              s=b.getElementsByTagName(e)[0];
+              s.parentNode.insertBefore(t,s);
+            }(
+              window,
+              document,
+              'script',
+              'https://connect.facebook.net/en_US/fbevents.js'
+            );
+
+            fbq('init', '1639427154246817');
+            fbq('track', 'PageView');
+          `}
+        </Script>
+
+        {/* Meta Pixel noscript fallback */}
+        <noscript>
+          <img
+            height="1"
+            width="1"
+            style={{ display: "none" }}
+            src="https://www.facebook.com/tr?id=1639427154246817&ev=PageView&noscript=1"
+            alt=""
+          />
+        </noscript>
+
+        {/* Razorpay Checkout */}
         <Script
           src="https://checkout.razorpay.com/v1/checkout.js"
           strategy="afterInteractive"
         />
-
       </body>
     </html>
   );
