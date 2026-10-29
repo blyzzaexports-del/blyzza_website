@@ -859,10 +859,8 @@ Suitable for:
 {
   id: 21,
   name: "Moringa Seed Oil",
-
   sizes: ["100ml"],
   prices: [800],
-
   image: [
     "/about/moringaseedoil1.jpg",
     "/about/moringaseedoil2.jpg",

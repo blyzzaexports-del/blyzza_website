@@ -19,7 +19,7 @@ const poppins = Poppins({
   display: "swap",
 });
 
-/* ✅ METADATA */
+/* ✅ METADATA + FACEBOOK DOMAIN VERIFICATION */
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.blyzza.com"),
 
@@ -30,6 +30,10 @@ export const metadata: Metadata = {
 
   alternates: {
     canonical: "/",
+  },
+
+  other: {
+    "facebook-domain-verification": "vg7j6e3898ubb7c16uvtqnsm186ofr",
   },
 };
 
